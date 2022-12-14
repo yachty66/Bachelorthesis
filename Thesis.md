@@ -1,0 +1,3 @@
+- [ ] check uni requirements - with fontsize always talk with gutachter about it (like in my expose is okay)
+- [ ] check if I can convert notebook to markdown and markdown than to pdf like i did in expose 
+- [ ] create header grundlagen
