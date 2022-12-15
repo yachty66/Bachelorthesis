@@ -14,6 +14,7 @@ Supervised Named Entity Recognition
 - [x] create a wordcloud plot
 - [x] find a model on which I want to fine tune on --> distilBert
 - [x] find model on which I want to fine tune on and create in notebook 
+- [ ] 
 - [ ] clean data from JNLPBA (removing I and B)
 - [ ] split data (ready for training)
 - [ ] make training (finetuning)
@@ -33,25 +34,10 @@ Supervised Named Entity Recognition
 - [ ] seq2seq 
 - [ ] compare all results 
 
-#next step is to repeat this step but with making the dataset weak  
-#than i train a seq2seq model
-
-
-
-- [ ] make sequence labelling with dataset
-- [ ] follow the guide here https://huggingface.co/docs/transformers/tasks/token_classification and fine tune distilbert
-
-
-
-
-- [ ] try to convert a notebook to markdown and than to pdf
-- [ ] setup Obsidian 
-- [ ] Einleitung schreiben
-
-
-
-
 ## Notes
+
+I need to search the scores for which i wanna meassure and than the NER scores. 
+
 
 Meeting with Matthias:
 
