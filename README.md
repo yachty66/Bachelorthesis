@@ -114,6 +114,7 @@ Basically what I need to do is reading about nlp, ner, ner with weakly labelled 
 # 3. Grundlagen
     3.1 Neuronale Netzwerke
     3.2 Deep Learning 
+    3.3 Backpropagation
     3.3 NLP (Erklärung des gesamten Prozess von Wort zu Vektor und die verschiedenen Bereiche, wo diese Vektoren eingesetzt werden können (Textgenerierung, Textzusammenfassungen...))
     3.4 NER 
     3.5 Labelling 
