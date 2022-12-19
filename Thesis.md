@@ -18,11 +18,12 @@
     3.2 Backpropagation - 
     3.3 Deep Learning -
     3.3 NLP (Erklärung des gesamten Prozess von Wort zu Vektor und die verschiedenen Bereiche, wo diese Vektoren eingesetzt werden können (Textgenerierung, Textzusammenfassungen...)) - 
-    3.4 NER 
-    3.5 Labelling 
-    3.6 Seq2Seq
-    3.7 LSTM/RNN 
+    3.4 NER -  
+    3.5 Labelling - 
+    3.7 RNN 
+    3.8 LSTM
     3.8 Transformer
+    3.6 Seq2Seq
     3.9 Fine tuning 
 # 4. Tools
     4.2 PyTorch
@@ -330,4 +331,140 @@ Today, NER is widely used in a variety of applications, including information ex
                  Venice
 
 
+### Labelling
 
+Labelling wird der Prozess genannt bei dem man einem Datenpunkt eine Klasse zuordnet. Labels sind da einen Datenpunkt mit einer eindeutigen Klasse zu verweisen. Bei dem erkennen von Eigennamen ist zu jedem Wort ein Label dazugehörig, welches eine Aussage über das Attribut, um welches es sich handelt macht. Labels werden benutzt um eine Model des maschinellen lernens zu trainieren, um dann Vorhersagen über neue nicht vorher gesehenen Daten treffen zu können.
+
+Es gibt verschieden Möglichkeiten Daten zu labeln. Man kann Menschen manuell labeln lassen. ImageNet ist ein Beispiel für ein Datenset was zum Teil von Menschen gelabelt wurde. Der Vorteil ist, dass man eine hohe Qualität erwarten kann, aber im Vergleich zu anderen Techniken sehr zeitintensiv sein kann.
+
+Eine andere Methode ist die des auto labeling. Beispiele sind Regel basierte Systeme oder aktiv lernende Algorithmen. Die Vorteile dabei sind, dass das labeln schneller geht aber dafür nicht so genau sein kann.
+
+**Regel basierte Systeme**
+
+Zuerst muss man sich manuell ein Datenset mit Labeln erzeugen. Zum Beispiel würde "Angela Merkel wurde 1954 in Hamburg geboren." die gelabelten Eigennamen "Angela Merkel" und "Hamburg" enthalten. 
+Danach trainiert man das Datenset mit einem überwachten Algorithmus für maschinelles Lernen. Das Ziel des Models dabei ist die Muster der Entitäten im Text zu erkennen.  
+Das Model kann als eine Funktion $f$ dargestellt werden, welche eine Eingabe $x$ (ein Text Dokument) nimmt und eine Ausgabe $y$ (die Labels für die bestimmten Eigennamen) erzeugt. Die Funktion $f$ lernt mit einem Trainingsalgorithmus von dem gelabelten Datenset. 
+Wenn das Model trainiert ist kann es für das bestimmen von neuen Labels bei eingebenen Text Dokumenten mit Eigennamen bestimmen. Zum Beispiel sollte das Model bei der Eingabe von "Wolfgang Schäuble wurde 1942 in Freiburg geboren." die Eigennamen "Wolfang Schäuble" und "Freiburg" vorhersagen.
+Die erstellten Labels werden benutzt um neue Regeln zu erzeugen oder bestehende zu erweitern. 
+
+**Aktiv lernende Algorithmen**
+
+Gestarted wird mit einem überwachten Algorithmus für maschinelles Lernen, um von einem kleinen gelabelten Datenset zu lernen. Dann benutzt man das trainierte Model um vorhersagen für ungelabelte Daten zu treffen. Als nächstes werden die Beispiele genommen bei denen das Model die größte Unsicherheit besitzt bei der Vorhersage. Das sind zum Beispiel Eigennamen die im Model nicht vorkommen. Die gewählten Beispiele werden menschlich gelabelt und zu dem gelabelten Datenset hinzugefügt. Nach diesem Schritt wird das Model neu trainiert. Diesen Schritt wiederholt so oft bis die gewünschte Leistung erreicht ist. Es ist auch möglich die Labels zufällig zu wählen, anstatt die Labels zu wählen, bei denen das Model die größte Unsicherheit besitzt. Der Nachteil beim zufälligen wählen ist, dass das Model länger braucht bessere Leistung zu erzielen.
+
+Eine gute Qualität der Labels ist signifikant, um schlechte Trainingsergebnisse vermeiden zu können und eine Algorithmus effektiv lernen lassen zu können.
+
+### RNN
+
+Rekurrente neuronale Netze (RNNs) ist ein Typ von neuronales Netzwerk welches designt wurde um nacheinander ablaufende Daten zu verarbeiten. 
+
+[todo image of sequential data]
+
+In RNN's ist jeder Zeitpunkt in der Eingabe vom Netzwerk verarbeitet. Die Ausgabe an jedem Zeitpunkt ist Abhängig von der Ausgabe vom vorherigen Zeitschritt. Das erlaubt dem Netzwerk Abhängigkeiten, welche sich über mehrer Zeitschritte erstrecken zu erkennen.
+
+Mathmatisch kann ein RNN wiefolgt beschrieben werden:
+
+$h(t) = f(h(t-1), x(t))$
+
+Dabei ist $h(t)$ die Ausgabe an jedem Zeitpunkt $t$, $h(t-1)$ is die Ausgabe am vorherigen Zeitpunkt und $x(t)$ ist die Eingabe am Zeitpunkt $t$. Die Funktion $f$ repräsentiert das innere eines RNN. 
+
+### LSTM 
+
+Long Short-Term Memory (LSTM) Netzwerke sind entwickelt worden um das Problem der verschwindenden Gradienten zu lösen, welches bei der Trainierung von traditionellen rekurrenten neuronalen Netzen (RNNs) auftreten kann. 
+
+In traditionellen RNNs sind die verborgenen Zustände zu jedem Zeitpunkt erneuert, indem der vorherige verborgene Zustand und die gegenwärtige Eingabe benutzt wird. 
+
+Bei dieser Regel kann es zu Problemen kommen beim lernen von langfristigen Abhängigkeiten, weil der Gradient des Fehlers mit Respekt zum verborgenen Zustand und den Gewichten dazu tendieren zu verschwinden mit fortschreitenden Zeitpunkten. Das ist als das Problem der verschwindenden Gradienten bekannt.
+
+LSTMs sind entwickelt wurden das Problem zu lösen. Dabei wurden weitere Netzwerk Strukturen eingeführt, welche "Gedächtniszellen" und "Tore" genannt werden. Die Tore können von den Gedächtniszellen länger Informationen speichern und abrufen. 
+
+Damit sind LSTMs in der Lage langfristige Abhängigkeiten in den Daten zu behalten und die Leistung von RNNs zu übersteigen.
+
+An jedem Zeitpunkt $t$, bekommt das LSTM als Eingabe die gegenwärtige Eingabe $x_t$ und den vorherigen verborgenen Zustand $h_{t-1}$ und erzeugt einen neuen verborgenen Zustand $h_t$ und eine Ausgabe $y_t$.
+
+Der verborgene Zustand $h_t$ ist eine Funktion von der gegenwärtigen Eingabe $x_t$ dem vorherigen verborgenen Zustand $h_{t-1}$ und den vorherigen Zell Zustand $c_{t-1}$. Der Zellenzustand $c_t$ ist eine "Erinnerung" an vergangene Eingaben und verborgene Zustände, die über die Zeit aufrechterhalten wird.
+
+[todo update of hidden and cell state?]
+
+------------------------------------------------------------------------------------------------------------
+To update the hidden state and cell state, the LSTM applies the following equations at each time step:
+
+Calculate the forget gate f_t, which controls what information is discarded from the previous cell state:
+f_t = sigmoid(W_f * x_t + U_f * h_{t-1} + b_f)
+
+where W_f and U_f are the weights for the input-to-hidden and hidden-to-hidden connections, respectively, and b_f is the bias.
+
+Calculate the input gate i_t, which controls what information is stored in the current cell state:
+i_t = sigmoid(W_i * x_t + U_i * h_{t-1} + b_i)
+
+where W_i and U_i are the weights for the input-to-hidden and hidden-to-hidden connections, respectively, and b_i is the bias.
+
+Calculate the cell state candidate c_t^:
+c_t^ = tanh(W_c * x_t + U_c * h_{t-1} + b_c)
+
+where W_c and U_c are the weights for the input-to-hidden and hidden-to-hidden connections, respectively, and b_c is the bias.
+
+Calculate the cell state c_t, which is a combination of the previous cell state and the cell state candidate, weighted by the forget and input gates:
+c_t = f_t * c_{t-1} + i_t * c_t^
+
+Calculate the output gate o_t, which controls what information is output from the current hidden state:
+o_t = sigmoid(W_o * x_t + U_o * h_{t-1} + b_o)
+
+where W_o and U_o are the weights for the input-to-hidden and hidden-to-hidden connections, respectively, and b_o is the bias.
+
+Calculate the hidden state h_t, which is a combination of the cell state and the output gate, weighted
+
+------------------------------------------------------------------------------------------------------------
+
+
+```
+#RNN
+
+class RNN:
+    def __init__(self, input_size, hidden_size, output_size):
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.output_size = output_size
+
+        self.U = np.random.randn(hidden_size, input_size) * 0.01
+        self.W = np.random.randn(hidden_size, hidden_size) * 0.01
+        self.V = np.random.randn(output_size, hidden_size) * 0.01
+
+        self.b = np.zeros((hidden_size, 1))
+        self.c = np.zeros((output_size, 1))
+
+    def forward(self, x):
+        T = len(x)
+        h = np.zeros((self.hidden_size, T + 1))
+        h[-1] = np.ones(T + 1)
+        o = np.zeros((self.output_size, T))
+
+        for t in np.arange(T):
+            h[:, t] = np.tanh(self.U @ x[t] + self.W @ h[:, t - 1] + self.b)
+            o[:, t] = softmax(self.V @ h[:, t] + self.c)
+
+        return o, h
+
+    def bptt(self, x, y):
+        T = len(y)
+        o, h = self.forward(x)
+
+        dLdU = np.zeros(self.U.shape)
+        dLdV = np.zeros(self.V.shape)
+        dLdW = np.zeros(self.W.shape)
+        dLdb = np.zeros(self.b.shape)
+        dLdc = np.zeros(self.c.shape)
+
+        delta_o = o
+        delta_o[y, np.arange(T)] -= 1.
+
+        for t in np.arange(T)[::-1]:
+            dLdV += delta_o[:, t].reshape(self.output_size, 1) @ h[:, t].reshape(1, self.hidden_size)
+            dLdc += delta_o[:, t].reshape(self.output_size, 1)
+
+            delta_t = (self.V.T @ delta_o[:, t] + self.c) * (1 - h[:, t] ** 2)
+
+            for bptt_step in np.arange(max(0, t - self.bptt_truncate), t + 1)[::-1]:
+                dLdW += delta_t.reshape(self.hidden_size, 1) @ h[:, bptt_step - 1].reshape(1, self.hidden_size)
+                
+                
+```
