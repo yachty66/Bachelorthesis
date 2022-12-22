@@ -1,11 +1,19 @@
 # Notes 
 
-- [x] check uni requirements - with fontsize always talk with gutachter about it (like in my expose is okay)
-- [x] check if I can convert notebook to markdown and markdown than to pdf like i did in expose 
-- [x] create header grundlagen
+19 - transformer - 
+20 - seq2seq, fine tuning -
+21 - call tatiana, make a clean version of my thesis and send it to matthias
+22 - script for fine tuning baseline model on token classification 
+23 - script for fine tuning model on seq2seq 
+24 - script for fine tuning alibaba on token classification 
+25 - script for fine tuning alibaba on token classification 
+26 - script for fine tuning model on seq2seq 
+27 - script for fine tuning model on seq2seq 
+28 - Motivation und Problem
+29 - Ziele und Struktur der arbeit
 
 
-```
+```python
 """
 # 1. Abstract
 # 2. Einführung
@@ -19,12 +27,14 @@
     3.3 Deep Learning -
     3.3 NLP (Erklärung des gesamten Prozess von Wort zu Vektor und die verschiedenen Bereiche, wo diese Vektoren eingesetzt werden können (Textgenerierung, Textzusammenfassungen...)) - 
     3.4 NER -  
-    3.5 Labelling - 
-    3.7 RNN 
-    3.8 LSTM
-    3.8 Transformer
-    3.6 Seq2Seq
-    3.9 Fine tuning 
+    3.5 Labeling - 
+    3.7 RNN - 
+    3.8 LSTM -
+    3.8 Transformer - 
+    3.6 Seq2Seq -  
+# x. Verwandte arbeiten (Wichtige verwandte Arbeiten, Rahmenwerke, Technologien, Werkzeuge usw., die Ihre Arbeit beeinflusst haben und in Ihrem Projekt verwendet werden / daseinsberechtigung beweisen)
+    4.1 Token classification
+    4.2 seq2seq
 # 4. Tools
     4.2 PyTorch
     4.1 Huggingface 
@@ -78,7 +88,7 @@ $\theta=$ Schwellenwert
 
 Die Funktion lässt sich bildlich darstellen:
 
-
+![MP-Neuron](images/MP_Neuron.drawio.svg) [todo add weights to image]
 
 Der nächste Schritt in der Historie neuronaler Netzwerke war die Entwicklung des Perceptrons [todo wer und wann]. Der Aufbau ist ähnlich zu dem des MP Neuronen Model unterscheidet sich aber darin, dass der Schellenwert kontinuierlich ist. Das heißt ein nach dem Input von Eingaben Werten kann der Output zum Beispiel 0.7 annehmen wohin bei einem linearen Schwellenwert das Ergebnis entweder 1 oder 0 sein kann. Anstatt nur die Schwellenwert Funktion kann das Perzeptron auch andere Aktivierungs funktionen annehmen [figure].
 
@@ -90,14 +100,10 @@ Folgend eine Tabelle, welche die Unterschiede aufzeigt:
 | Schwellenwert | Statisch | Anpassbar während des Trainings |
 | Ausgabe | Binär (1 oder 0) | Kontinuierliche Werte |
 
-
+![MP-Neuron](images/Perceptron.drawio.svg) [todo add weights to image]
 
 
 [todo multi layer perzeptron]
-
-
-
-
 
 ### Backpropagation
 
@@ -331,9 +337,9 @@ Today, NER is widely used in a variety of applications, including information ex
                  Venice
 
 
-### Labelling
+### Labeling
 
-Labelling wird der Prozess genannt bei dem man einem Datenpunkt eine Klasse zuordnet. Labels sind da einen Datenpunkt mit einer eindeutigen Klasse zu verweisen. Bei dem erkennen von Eigennamen ist zu jedem Wort ein Label dazugehörig, welches eine Aussage über das Attribut, um welches es sich handelt macht. Labels werden benutzt um eine Model des maschinellen lernens zu trainieren, um dann Vorhersagen über neue nicht vorher gesehenen Daten treffen zu können.
+Labeling wird der Prozess genannt bei dem man einem Datenpunkt eine Klasse zuordnet. Labels sind da einen Datenpunkt mit einer eindeutigen Klasse zu verweisen. Bei dem erkennen von Eigennamen ist zu jedem Wort ein Label dazugehörig, welches eine Aussage über das Attribut, um welches es sich handelt macht. Labels werden benutzt um eine Model des maschinellen lernens zu trainieren, um dann Vorhersagen über neue nicht vorher gesehenen Daten treffen zu können.
 
 Es gibt verschieden Möglichkeiten Daten zu labeln. Man kann Menschen manuell labeln lassen. ImageNet ist ein Beispiel für ein Datenset was zum Teil von Menschen gelabelt wurde. Der Vorteil ist, dass man eine hohe Qualität erwarten kann, aber im Vergleich zu anderen Techniken sehr zeitintensiv sein kann.
 
@@ -360,6 +366,8 @@ Rekurrente neuronale Netze (RNNs) ist ein Typ von neuronales Netzwerk welches de
 [todo image of sequential data]
 
 In RNN's ist jeder Zeitpunkt in der Eingabe vom Netzwerk verarbeitet. Die Ausgabe an jedem Zeitpunkt ist Abhängig von der Ausgabe vom vorherigen Zeitschritt. Das erlaubt dem Netzwerk Abhängigkeiten, welche sich über mehrer Zeitschritte erstrecken zu erkennen.
+
+[todo add RNN drawing from yannick kilcher attention is all you need video minute 3:01 https://www.youtube.com/watch?v=iDulhoQ2pro]
 
 Mathmatisch kann ein RNN wiefolgt beschrieben werden:
 
@@ -415,56 +423,87 @@ Calculate the hidden state h_t, which is a combination of the cell state and the
 
 ------------------------------------------------------------------------------------------------------------
 
+### Transformer
 
-```
-#RNN
+Die Transformer Architektur wurde in dem Paper [todo "Attention is All You Need" by Vaswani et al. in 2017] vorgestellt. Die Architektur schlägt die die Leistung von vorher existierenden Modellen wie LSTMs und RNNs, die versuchen sequentielle Daten zu modellieren. 
 
-class RNN:
-    def __init__(self, input_size, hidden_size, output_size):
-        self.input_size = input_size
-        self.hidden_size = hidden_size
-        self.output_size = output_size
+Die Hauptinnovation bei Transformern ist die Benutzung von Selbstaufmerksamkeitsmechanismen. Damit kann das Model die Eingabedaten an jeder Stelle dynamisch bewerten und den Kontext den Kontext von aneren Positionen verwenden, beim durchführen von vorhersagen. Zu traditionellen Modellen underscheidet sich das dadurch, das keine Fenster mit fester Länge oder wiederkehrende Verbindungen verwendet werden, um den Kontext zu erfassen.
 
-        self.U = np.random.randn(hidden_size, input_size) * 0.01
-        self.W = np.random.randn(hidden_size, hidden_size) * 0.01
-        self.V = np.random.randn(output_size, hidden_size) * 0.01
+Die Transformer Architektur besitzt folgende Hauptkomponenten:
 
-        self.b = np.zeros((hidden_size, 1))
-        self.c = np.zeros((output_size, 1))
+Selbstaufmerksamkeitsschichten, die es dem Modell ermöglichen, die Eingabedaten an jeder Position dynamisch zu gewichten und den Kontext von anderen Positionen zu nutzen, wenn Vorhersagen getroffen werden.
 
-    def forward(self, x):
-        T = len(x)
-        h = np.zeros((self.hidden_size, T + 1))
-        h[-1] = np.ones(T + 1)
-        o = np.zeros((self.output_size, T))
+Positionsbezogene Feed-Forward-Schichten, welche die Eingabedaten an jeder Position unabhängig verarbeiten und das erkennen von komplexeren Mustern ermöglichen.
 
-        for t in np.arange(T):
-            h[:, t] = np.tanh(self.U @ x[t] + self.W @ h[:, t - 1] + self.b)
-            o[:, t] = softmax(self.V @ h[:, t] + self.c)
+Ein Encoder, der die Sequenz der Eingabedaten nimmt und eine kontinuierliche Darstellung der Eingabe erzeugt.
 
-        return o, h
+Ein Decoder, der die Kontinuierliche Darstellung aufnimmt und eine Ausgabesequenz erzeugt.
 
-    def bptt(self, x, y):
-        T = len(y)
-        o, h = self.forward(x)
+Der Decoder und Encoder bestehen dabei aus mehreren Positionsbezogenen Feed-Forward-Schichten und Selbstaufmerksamkeitsschichten. 
 
-        dLdU = np.zeros(self.U.shape)
-        dLdV = np.zeros(self.V.shape)
-        dLdW = np.zeros(self.W.shape)
-        dLdb = np.zeros(self.b.shape)
-        dLdc = np.zeros(self.c.shape)
+[todo add architecture diagramm from paper]
 
-        delta_o = o
-        delta_o[y, np.arange(T)] -= 1.
+Folgend die mathematische Definition für Selbstaufmerksamkeitsschichten und Positionsbezogene Feed-Forward-Schichten:
 
-        for t in np.arange(T)[::-1]:
-            dLdV += delta_o[:, t].reshape(self.output_size, 1) @ h[:, t].reshape(1, self.hidden_size)
-            dLdc += delta_o[:, t].reshape(self.output_size, 1)
+**Self-attention layers:**
 
-            delta_t = (self.V.T @ delta_o[:, t] + self.c) * (1 - h[:, t] ** 2)
+Wenn $X$ die Eingabe Daten sind, wo $X \in \mathbb{R}^{n \times d}$ und $n$ is die Länge der Sequenz und $d$ ist die Dimension der Eingabedaten.
 
-            for bptt_step in np.arange(max(0, t - self.bptt_truncate), t + 1)[::-1]:
-                dLdW += delta_t.reshape(self.hidden_size, 1) @ h[:, bptt_step - 1].reshape(1, self.hidden_size)
-                
-                
-```
+Seien $Q$, $K$ und $V$ Matrizen, die verwendet werden, um die Eingabedaten in verschiedene Räume zu projizieren, mit $Q \in \mathbb{R}^{n \times d_k}$, $K \in \mathbb{R}^{n \times d_k}$, und $V \in \mathbb{R}^{n \times d_v}$. Die Werte $d_k$ und $d_v$ sind die Dimensionen von den projizierten Räumen.
+
+Die Selbstaufmerksamkeitsschichten berechnen die Aufmerksamkeitsgewichte für jede Position, indem sie das Skalarprodukt der projizierten Eingabedaten nimmt und durch die Quadratwurzel der projizierten Raumdimensionen dividiert:
+
+$$ Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V $$
+
+Die Ausgabe der Selbstaufmerksamkeitsschicht ist dann die gewichtete Summe der Eingabedaten, wobei die Gewichte durch die Aufmerksamkeitsgewichte gegeben sind:
+
+$$ Output = Attention(Q, K, V) $$
+
+In dieser Gleichung ist das Punktprodukt von $Q$ und $K^T$ ein Maß für die Ähnlichkeit zwischen den Eingabedaten an jeder Position, und die Division durch die Quadratwurzel von $d_k$ wird verwendet, um das Punktprodukt zu skalieren. Die Aufmerksamkeitsgewichte werden dann mit der Softmax-Funktion berechnet, die die Skalarproduktwerte so normalisiert, dass sie sich zu 1 summieren. Die endgültige Ausgabe ist die gewichtete Summe der Eingabedaten, wobei die Gewichte durch die Aufmerksamkeitsgewichte gegeben sind.
+
+
+**Positionsbezogene Feed-Forward-Schichten:**
+
+Seien $x$ seien die Eingabedaten an einer gegebenen Position, mit den Dimensionen der Eingabedaten $x \in \mathbb{R}^{d}$ und $d$.
+
+Die Positionsbezogene Feed-Forward-Schicht wendet zuerst eine lineare Transformation auf die 
+
+The position-wise feed-forward layer wendet eine lineare Transformation auf die Eingabedaten an, gefolgt von einer nichtlinearen Aktivierungsfunktion:
+
+$$ y = activation(W_1x + b_1) $$
+
+Die Ausgabe der positionsweisen Feed-Forward-Schicht wird dann durch eine zweite vollständig verbundene Schicht geleitet, die eine weitere lineare Transformation anwendet:
+
+$$ z = W_2y + b_2 $$
+
+$W_1$, $W_2$, $b_1$, und $b_2$ sind die Gewichte und Biase der zwei vollständig verbundenen Schichten.
+
+### Seq2Seq
+
+Die seq2seq Architektur besteht aus zwei Hauptkomponenten, den Encoder und einen Decoder. 
+
+Der Encoder bekommt als Eingabe zum Beispiel einen Satz. Dieser Satz wird in einen Kontext Vektor konvertiert, der immer die gleiche Länge besitzt, egal bei welcher länge Eingabedaten. Der Kontextvektor wird dann an den Decoder weitergeleitet, der dafür verantwortlich ist die Ausgabe zu erzeugen. 
+
+[todo image of seq2seq]
+
+Mathematisch kann das seq2seq Model wiefolgt zusammengefasst werden:
+
+Der Encoder verarbeitet die Eingabedaten Element für Element. Bei einem seq2seq für Übersetzung, wenn die Eingabe "Der Hund bellte." ist, dann wird zuerst das Wort "Der" verarbeitet, dann "Hund" und so weiter. An jedem Zeitpunkt $t$ nimmt der Encoder eine Eingabe "x_t" und benutzt diese Eingave um den verborgenen Zustand "h_t" mit dieser Eingabe zu erweitern. Der verborgene Zustand $h_t$ ist die Zusammenfassung der gesamten Information die bisher verarbeitet wurde.
+
+Mathematisch ist der verborgene Zustand so definiert:
+
+$$h_t = f(h_{t-1}, x_t)$$
+
+$f$ ist eine nicht lineare Aktivierungs Funktion wie die Sigmoid oder Tanh Funktion.
+
+Wenn der Encoder die gesamte Eingabe verarbeitet hat. Also den ganzen Satz "Der Hund bellte.", erzeugt der Encoder einen finalen verborgenen Zustand $h_T$. $h_T$ wird als Kontext Vektor $c$ benutzt. Dieser Kontextvektor $c$ wird dann an den Decoder weitergegeben. Der Decoder benutzt den Kontextvektor um den Ausgabesatz "The dog barked." zu produzieren.
+
+Das verarbeiten des Kontextvektor passiert wie beim Encoder mit den Eingabedaten Element für Element. Das heißt bei der Ausgabe "Der Hund bellte." erzeugt der Decoder zuerst "The". An jedem Zeitpunkt "t" nimmt der Decoder den vorherig verborgenen Zustand $h_{t-1}$ und die vorherige Ausgabe $y_{t-1}$ und benutzt diese um die gegenwärtige Ausgabe $y_t$ zu erzeugen. 
+
+Mathematisch ist die Ausgabe an jedem Zeitpunkt berechnet wiefolgt:
+
+$$y_t = g(h_{t-1}, y_{t-1})$$
+
+$g$ ist eine nicht lineare Aktivierungs Funktion wie die Sigmoid oder Tanh Funktion.
+
+Der Decoder erzeugt solange Ausgaben $y_t$ bis die engültige Zielausgabe "Der Hund bellte." erzeugt wurde. Das gesamte seq2seq Modell ist trainiert um den Unterschied zwischen der vorhergesagten Ausgabe und der gewünschten Ausgabe zu minimnieren. Dabei benutzt man einen Optimierungsalgorithmus wie den stochastischer Gradientenabstieg.
