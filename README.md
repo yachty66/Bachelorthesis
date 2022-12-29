@@ -14,25 +14,7 @@ Supervised Named Entity Recognition
 - [x] create a wordcloud plot
 - [x] find a model on which I want to fine tune on --> distilBert
 - [x] find model on which I want to fine tune on and create in notebook 
-- [ ] 
-- [ ] clean data from JNLPBA (removing I and B)
-- [ ] split data (ready for training)
-- [ ] make training (finetuning)
-- [ ] creating a strategy for making the JNLPBA weak
-- [ ] take JNLPBA and make it weak
-
-
-- [ ] fine tune again this time with weak JNLPBA
-- [ ] strategy for seq2seq 
-- [ ] seq2seq 
-- [ ] compare all results
-- [ ] find a model which I could fine tune with ACL19
-- [ ] make ACL19 ready for fine tuning
-- [ ] fine tuning of found model with ACL19
-- [ ] NER with the result of the model fine tuned on ACL19
-- [ ] strategy for seq2seq 
-- [ ] seq2seq 
-- [ ] compare all results 
+- [ ] tokenize 
 
 ## Notes
 
