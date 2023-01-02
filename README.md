@@ -150,6 +150,14 @@ CoNLL 2003
 NCBI-disease
 JNLPBA
 
+### Meeting Matthias 01.01.2023
+- Adding fine tuning
+- deutsche worte englisch framen 
+- formeln referenzieren 
+- check bachelor thesis form my uni
+- search papers on how to make a dataset weak
+- google colab with token classification
+
 
 
 Questions Matthias:
