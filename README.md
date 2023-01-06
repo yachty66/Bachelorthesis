@@ -14,7 +14,19 @@ Supervised Named Entity Recognition
 - [x] create a wordcloud plot
 - [x] find a model on which I want to fine tune on --> distilBert
 - [x] find model on which I want to fine tune on and create in notebook 
-- [ ] tokenize 
+- [x] add lenghts
+- [x] put seq2seq into colab and see if it works there
+- [x] add metrics
+- [x] name current version 
+- [x] from actual entities drop each other
+- [x] remove start letters from mapping
+- [x] turn starting letters in uppercase letters
+- [ ] fix evaluation
+- [ ] next steps
+- [ ] search and find a paper which describes an approach on how to make a dataset weak 
+- [ ] add wandb 
+- [ ] add push to hub
+- [ ] implement into my code
 
 ## Notes
 
@@ -150,7 +162,7 @@ CoNLL 2003
 NCBI-disease
 JNLPBA
 
-### Meeting Matthias 01.01.2023
+### Meeting Matthias 02.01.2023
 - Adding fine tuning
 - deutsche worte englisch framen 
 - formeln referenzieren 
@@ -158,7 +170,11 @@ JNLPBA
 - search papers on how to make a dataset weak
 - google colab with token classification
 
-
+### Meeting Matthias 04.01.2023
+- in spans o: weg lassen 
+- i, b weglassen
+- does he run notebooks over night or how is he doing this?
+- motivation from amazon paper
 
 Questions Matthias:
 
