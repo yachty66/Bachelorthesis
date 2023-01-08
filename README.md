@@ -21,11 +21,12 @@ Supervised Named Entity Recognition
 - [x] from actual entities drop each other
 - [x] remove start letters from mapping
 - [x] turn starting letters in uppercase letters
-- [x] fix evaluation
-- [x] search and find a paper which describes an approach on how to make a dataset weak 
-- [x] add wandb 
-- [x] add push to hub
-- [x] implement into my code
+- [ ] fix evaluation
+- [ ] next steps
+- [ ] search and find a paper which describes an approach on how to make a dataset weak 
+- [ ] add wandb 
+- [ ] add push to hub
+- [ ] implement into my code
 
 ## Notes
 
