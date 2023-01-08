@@ -1,0 +1,19 @@
+hparam: !!python/object:argparse.Namespace
+  adam_epsilon: 1.0e-08
+  data_dir: jnlpba
+  early_stop_callback: false
+  eval_batch_size: 8
+  fp_16: true
+  gradient_accumulation_steps: 16
+  learning_rate: 0.0003
+  max_grad_norm: 1
+  max_seq_length: 256
+  model_name_or_path: t5-small
+  num_train_epochs: 3
+  opt_level: O1
+  output_dir: checkpoints
+  seed: 42
+  tokenizer_name_or_path: t5-small
+  train_batch_size: 8
+  warmup_steps: 0
+  weight_decay: 0.0
