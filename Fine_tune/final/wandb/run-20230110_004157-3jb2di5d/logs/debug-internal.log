@@ -1,0 +1,92 @@
+2023-01-10 00:41:57,334 INFO    StreamThr :53045 [internal.py:wandb_internal():87] W&B internal server running at pid: 53045, started at: 2023-01-10 00:41:57.333116
+2023-01-10 00:41:57,335 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: status
+2023-01-10 00:41:57,337 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: status
+2023-01-10 00:41:57,338 INFO    WriterThread:53045 [datastore.py:open_for_write():75] open: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_004157-3jb2di5d/run-3jb2di5d.wandb
+2023-01-10 00:41:57,338 DEBUG   SenderThread:53045 [sender.py:send():303] send: header
+2023-01-10 00:41:57,358 DEBUG   SenderThread:53045 [sender.py:send():303] send: run
+2023-01-10 00:41:58,077 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: check_version
+2023-01-10 00:41:58,078 INFO    SenderThread:53045 [dir_watcher.py:__init__():216] watching files in: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_004157-3jb2di5d/files
+2023-01-10 00:41:58,078 INFO    SenderThread:53045 [sender.py:_start_run_threads():928] run started: 3jb2di5d with start time 1673307717.328397
+2023-01-10 00:41:58,078 DEBUG   SenderThread:53045 [sender.py:send():303] send: summary
+2023-01-10 00:41:58,078 INFO    SenderThread:53045 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-01-10 00:41:58,078 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: check_version
+2023-01-10 00:41:58,610 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: run_start
+2023-01-10 00:41:58,618 DEBUG   HandlerThread:53045 [system_info.py:__init__():31] System info init
+2023-01-10 00:41:58,618 DEBUG   HandlerThread:53045 [system_info.py:__init__():46] System info init done
+2023-01-10 00:41:58,618 INFO    HandlerThread:53045 [system_monitor.py:start():150] Starting system monitor
+2023-01-10 00:41:58,618 INFO    SystemMonitor:53045 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2023-01-10 00:41:58,618 INFO    HandlerThread:53045 [system_monitor.py:probe():171] Collecting system info
+2023-01-10 00:41:58,619 INFO    SystemMonitor:53045 [interfaces.py:start():168] Started cpu
+2023-01-10 00:41:58,619 INFO    SystemMonitor:53045 [interfaces.py:start():168] Started disk
+2023-01-10 00:41:58,619 DEBUG   HandlerThread:53045 [system_info.py:probe():195] Probing system
+2023-01-10 00:41:58,619 INFO    SystemMonitor:53045 [interfaces.py:start():168] Started gpuapple
+2023-01-10 00:41:58,620 INFO    SystemMonitor:53045 [interfaces.py:start():168] Started memory
+2023-01-10 00:41:58,622 INFO    SystemMonitor:53045 [interfaces.py:start():168] Started network
+2023-01-10 00:41:58,627 DEBUG   HandlerThread:53045 [system_info.py:_probe_git():180] Probing git
+2023-01-10 00:41:58,652 DEBUG   HandlerThread:53045 [system_info.py:_probe_git():188] Probing git done
+2023-01-10 00:41:58,652 DEBUG   HandlerThread:53045 [system_info.py:probe():241] Probing system done
+2023-01-10 00:41:58,653 DEBUG   HandlerThread:53045 [system_monitor.py:probe():180] {'os': 'macOS-12.6-arm64-arm-64bit', 'python': '3.10.9', 'heartbeatAt': '2023-01-09T23:41:58.619735', 'startedAt': '2023-01-09T23:41:57.234176', 'docker': None, 'cuda': None, 'args': None, 'state': 'running', 'program': 'Fine_tune/final/Token_classification_weak_2-jvsc-7555f041-a57e-426a-8ecb-5eb37b082b30bdf5fbaf-1c10-4250-9fb2-c58474547f2e.ipynb', 'root': '/Users/maxhager/Projects2022/BachelorThesis', 'git': {'remote': 'https://github.com/yachty66/Bachelorthesis.git', 'commit': '2eb32927412335c7e11cbf42e7c900c0738dbe77'}, 'email': 'maxhager28@gmail.com', 'host': 'Maxs-Air-2', 'username': 'maxhager', 'executable': '/Users/maxhager/.virtualenvs/thesis/bin/python', 'cpu_count': 8, 'cpu_count_logical': 8, 'disk': {'total': 460.4317207336426, 'used': 14.358600616455078}, 'gpuapple': {'type': 'arm', 'vendor': 'Apple'}, 'memory': {'total': 16.0}}
+2023-01-10 00:41:58,653 INFO    HandlerThread:53045 [system_monitor.py:probe():181] Finished collecting system info
+2023-01-10 00:41:58,653 INFO    HandlerThread:53045 [system_monitor.py:probe():184] Publishing system info
+2023-01-10 00:41:58,653 DEBUG   HandlerThread:53045 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-01-10 00:41:58,653 DEBUG   HandlerThread:53045 [system_info.py:_save_pip():67] Saving pip packages done
+2023-01-10 00:41:58,654 INFO    HandlerThread:53045 [system_monitor.py:probe():186] Finished publishing system info
+2023-01-10 00:41:58,656 DEBUG   SenderThread:53045 [sender.py:send():303] send: files
+2023-01-10 00:41:58,656 INFO    SenderThread:53045 [sender.py:_save_file():1171] saving file wandb-metadata.json with policy now
+2023-01-10 00:41:58,662 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:41:58,662 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:41:58,977 DEBUG   SenderThread:53045 [sender.py:send():303] send: telemetry
+2023-01-10 00:41:58,977 DEBUG   SenderThread:53045 [sender.py:send():303] send: config
+2023-01-10 00:41:58,978 DEBUG   SenderThread:53045 [sender.py:send():303] send: metric
+2023-01-10 00:41:58,978 DEBUG   SenderThread:53045 [sender.py:send():303] send: telemetry
+2023-01-10 00:41:58,978 DEBUG   SenderThread:53045 [sender.py:send():303] send: metric
+2023-01-10 00:41:58,978 WARNING SenderThread:53045 [sender.py:send_metric():1127] Seen metric with glob (shouldn't happen)
+2023-01-10 00:41:58,978 DEBUG   SenderThread:53045 [sender.py:send():303] send: telemetry
+2023-01-10 00:41:59,083 INFO    Thread-13 :53045 [dir_watcher.py:_on_file_created():275] file/dir created: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_004157-3jb2di5d/files/requirements.txt
+2023-01-10 00:41:59,084 INFO    Thread-13 :53045 [dir_watcher.py:_on_file_created():275] file/dir created: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_004157-3jb2di5d/files/wandb-summary.json
+2023-01-10 00:41:59,084 INFO    Thread-13 :53045 [dir_watcher.py:_on_file_created():275] file/dir created: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_004157-3jb2di5d/files/wandb-metadata.json
+2023-01-10 00:41:59,084 INFO    Thread-13 :53045 [dir_watcher.py:_on_file_created():275] file/dir created: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_004157-3jb2di5d/files/output.log
+2023-01-10 00:41:59,546 INFO    Thread-16 :53045 [upload_job.py:push():143] Uploaded file /var/folders/r9/30wn6mvs2md_xllcvl5lpn0m0000gn/T/tmpmkrb7pz9wandb/3ti4n66z-wandb-metadata.json
+2023-01-10 00:42:01,091 INFO    Thread-13 :53045 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_004157-3jb2di5d/files/output.log
+2023-01-10 00:42:13,989 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:42:13,990 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:42:28,210 INFO    Thread-13 :53045 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_004157-3jb2di5d/files/config.yaml
+2023-01-10 00:42:29,438 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:42:29,438 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:42:44,805 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:42:44,805 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:42:58,627 DEBUG   SystemMonitor:53045 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2023-01-10 00:42:58,629 DEBUG   SenderThread:53045 [sender.py:send():303] send: telemetry
+2023-01-10 00:42:58,629 DEBUG   SenderThread:53045 [sender.py:send():303] send: stats
+2023-01-10 00:43:00,140 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:43:00,140 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:43:15,485 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:43:15,486 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:43:28,635 DEBUG   SenderThread:53045 [sender.py:send():303] send: stats
+2023-01-10 00:43:29,520 INFO    Thread-13 :53045 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_004157-3jb2di5d/files/config.yaml
+2023-01-10 00:43:30,852 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:43:30,852 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:43:46,199 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:43:46,200 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:43:58,643 DEBUG   SenderThread:53045 [sender.py:send():303] send: stats
+2023-01-10 00:44:01,526 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:44:01,527 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:44:11,959 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:44:11,960 INFO    HandlerThread:53045 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:44:11,960 INFO    HandlerThread:53045 [system_monitor.py:finish():160] Stopping system monitor
+2023-01-10 00:44:11,979 DEBUG   SystemMonitor:53045 [system_monitor.py:_start():137] Finished system metrics aggregation loop
+2023-01-10 00:44:11,980 DEBUG   SystemMonitor:53045 [system_monitor.py:_start():141] Publishing last batch of metrics
+2023-01-10 00:44:11,980 INFO    HandlerThread:53045 [interfaces.py:finish():175] Joined cpu
+2023-01-10 00:44:11,980 INFO    HandlerThread:53045 [interfaces.py:finish():175] Joined disk
+2023-01-10 00:44:11,980 INFO    HandlerThread:53045 [interfaces.py:finish():175] Joined gpuapple
+2023-01-10 00:44:11,980 INFO    HandlerThread:53045 [interfaces.py:finish():175] Joined memory
+2023-01-10 00:44:11,980 INFO    HandlerThread:53045 [interfaces.py:finish():175] Joined network
+2023-01-10 00:44:11,981 DEBUG   SenderThread:53045 [sender.py:send():303] send: stats
+2023-01-10 00:44:16,878 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:44:16,878 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:44:32,232 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:44:32,233 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:44:47,602 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:44:47,604 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:45:02,970 DEBUG   HandlerThread:53045 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:45:02,972 DEBUG   SenderThread:53045 [sender.py:send_request():317] send_request: stop_status
