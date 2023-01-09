@@ -1,0 +1,33 @@
+{
+    "os": "macOS-12.6-arm64-arm-64bit",
+    "python": "3.10.9",
+    "heartbeatAt": "2023-01-09T23:51:01.432905",
+    "startedAt": "2023-01-09T23:51:00.223755",
+    "docker": null,
+    "cuda": null,
+    "args": null,
+    "state": "running",
+    "program": "Fine_tune/final/Token_classification_jnlpb_2_2-jvsc-a5c9b052-26cc-4d52-ac93-058dbcc5b45a79788450-614d-4681-acb6-e54c46f1a913.ipynb",
+    "root": "/Users/maxhager/Projects2022/BachelorThesis",
+    "git": {
+        "remote": "https://github.com/yachty66/Bachelorthesis.git",
+        "commit": "5a55c78d07acdab7870163beb47bc636661cfc97"
+    },
+    "email": "maxhager28@gmail.com",
+    "host": "Maxs-Air-2",
+    "username": "maxhager",
+    "executable": "/Users/maxhager/.virtualenvs/thesis/bin/python",
+    "cpu_count": 8,
+    "cpu_count_logical": 8,
+    "disk": {
+        "total": 460.4317207336426,
+        "used": 14.358600616455078
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 16.0
+    }
+}

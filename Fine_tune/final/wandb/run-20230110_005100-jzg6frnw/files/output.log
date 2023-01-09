@@ -1,0 +1,113 @@
+Found cached dataset jnlpba (/Users/maxhager/.cache/huggingface/datasets/jnlpba/jnlpba/1.0.0/3062f220823930cffde7976b694aa67bac3b06c322a02ced92d3761519810ce4)
+/var/folders/r9/30wn6mvs2md_xllcvl5lpn0m0000gn/T/ipykernel_53785/1455746253.py:72: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  row["ner_tags"] = lst
+/var/folders/r9/30wn6mvs2md_xllcvl5lpn0m0000gn/T/ipykernel_53785/1455746253.py:89: SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  row["ner_tags"] = lst
+Some weights of the model checkpoint at bert-base-cased were not used when initializing BertForTokenClassification: ['cls.predictions.transform.LayerNorm.bias', 'cls.predictions.transform.dense.bias', 'cls.seq_relationship.weight', 'cls.predictions.transform.dense.weight', 'cls.predictions.decoder.weight', 'cls.predictions.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.seq_relationship.bias']
+- This IS expected if you are initializing BertForTokenClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing BertForTokenClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of BertForTokenClassification were not initialized from the model checkpoint at bert-base-cased and are newly initialized: ['classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/transformers/training_args.py:1257: FutureWarning: `--push_to_hub_token` is deprecated and will be removed in version 5 of 🤗 Transformers. Use `--hub_token` instead.
+  warnings.warn(
+/var/folders/r9/30wn6mvs2md_xllcvl5lpn0m0000gn/T/ipykernel_53785/152412463.py:1: FutureWarning: load_metric is deprecated and will be removed in the next major version of datasets. Use 'evaluate.load' instead, from the new library 🤗 Evaluate: https://huggingface.co/docs/evaluate
+  metric = load_metric("seqeval")
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+Cloning https://huggingface.co/yachty66/bert-base-cased-finetuned-ner-strong-labelled into local empty directory.
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+The following columns in the training set don't have a corresponding argument in `BertForTokenClassification.forward` and have been ignored: id, ner_tags, tokens. If id, ner_tags, tokens are not expected by `BertForTokenClassification.forward`,  you can safely ignore this message.
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+***** Running training *****
+  Num examples = 10
+  Num Epochs = 3
+  Instantaneous batch size per device = 16
+  Total train batch size (w. parallel, distributed & accumulation) = 16
+  Gradient Accumulation steps = 1
+  Total optimization steps = 3
+  Number of trainable parameters = 107722756
+Automatic Weights & Biases logging enabled, to disable set os.environ["WANDB_DISABLED"] = "true"
+You're using a BertTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+The following columns in the evaluation set don't have a corresponding argument in `BertForTokenClassification.forward` and have been ignored: id, ner_tags, tokens. If id, ner_tags, tokens are not expected by `BertForTokenClassification.forward`,  you can safely ignore this message.
+***** Running Evaluation *****
+  Num examples = 10
+  Batch size = 16
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/seqeval/metrics/sequence_labeling.py:171: UserWarning: 0 seems not to be NE tag.
+  warnings.warn('{} seems not to be NE tag.'.format(chunk))
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/seqeval/metrics/sequence_labeling.py:171: UserWarning: 2 seems not to be NE tag.
+  warnings.warn('{} seems not to be NE tag.'.format(chunk))
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/seqeval/metrics/sequence_labeling.py:171: UserWarning: 1 seems not to be NE tag.
+  warnings.warn('{} seems not to be NE tag.'.format(chunk))
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/seqeval/metrics/sequence_labeling.py:171: UserWarning: 3 seems not to be NE tag.
+  warnings.warn('{} seems not to be NE tag.'.format(chunk))
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/seqeval/metrics/v1.py:57: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/seqeval/metrics/v1.py:57: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 due to no true samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/numpy/lib/function_base.py:518: RuntimeWarning: Mean of empty slice.
+  avg = a.mean(axis, **keepdims_kw)
+/Users/maxhager/.virtualenvs/thesis/lib/python3.10/site-packages/numpy/core/_methods.py:190: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+{'eval_loss': 1.1935713291168213, 'eval_precision': 0.0, 'eval_recall': 0.0, 'eval_f1': 0.0, 'eval_accuracy': 0.6252723311546841, 'eval_runtime': 0.4914, 'eval_samples_per_second': 20.349, 'eval_steps_per_second': 2.035, 'epoch': 1.0}
+{'eval_loss': 1.0876998901367188, 'eval_precision': 0.0, 'eval_recall': 0.0, 'eval_f1': 0.0, 'eval_accuracy': 0.7581699346405228, 'eval_runtime': 0.4312, 'eval_samples_per_second': 23.191, 'eval_steps_per_second': 2.319, 'epoch': 2.0}
+The following columns in the evaluation set don't have a corresponding argument in `BertForTokenClassification.forward` and have been ignored: id, ner_tags, tokens. If id, ner_tags, tokens are not expected by `BertForTokenClassification.forward`,  you can safely ignore this message.
+***** Running Evaluation *****
+  Num examples = 10
+  Batch size = 16
+{'eval_loss': 1.0400521755218506, 'eval_precision': 0.0, 'eval_recall': 0.0, 'eval_f1': 0.0, 'eval_accuracy': 0.7821350762527233, 'eval_runtime': 0.4456, 'eval_samples_per_second': 22.443, 'eval_steps_per_second': 2.244, 'epoch': 3.0}
+{'train_runtime': 5.3988, 'train_samples_per_second': 5.557, 'train_steps_per_second': 0.556, 'train_loss': 1.1949286460876465, 'epoch': 3.0}
+The following columns in the evaluation set don't have a corresponding argument in `BertForTokenClassification.forward` and have been ignored: id, ner_tags, tokens. If id, ner_tags, tokens are not expected by `BertForTokenClassification.forward`,  you can safely ignore this message.
+***** Running Evaluation *****
+  Num examples = 10
+  Batch size = 16
+Training completed. Do not forget to share your model on huggingface.co/models =)
+The following columns in the evaluation set don't have a corresponding argument in `BertForTokenClassification.forward` and have been ignored: id, ner_tags, tokens. If id, ner_tags, tokens are not expected by `BertForTokenClassification.forward`,  you can safely ignore this message.
+***** Running Evaluation *****
+  Num examples = 10
+  Batch size = 16
+The following columns in the test set don't have a corresponding argument in `BertForTokenClassification.forward` and have been ignored: id, ner_tags, tokens. If id, ner_tags, tokens are not expected by `BertForTokenClassification.forward`,  you can safely ignore this message.
+***** Running Prediction *****
+  Num examples = 10
+  Batch size = 16

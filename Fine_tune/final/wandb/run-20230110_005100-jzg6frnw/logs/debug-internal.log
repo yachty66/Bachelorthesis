@@ -1,0 +1,292 @@
+2023-01-10 00:51:00,252 INFO    StreamThr :54012 [internal.py:wandb_internal():87] W&B internal server running at pid: 54012, started at: 2023-01-10 00:51:00.251422
+2023-01-10 00:51:00,255 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: status
+2023-01-10 00:51:00,257 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: status
+2023-01-10 00:51:00,262 DEBUG   SenderThread:54012 [sender.py:send():303] send: header
+2023-01-10 00:51:00,262 INFO    WriterThread:54012 [datastore.py:open_for_write():75] open: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/run-jzg6frnw.wandb
+2023-01-10 00:51:00,288 DEBUG   SenderThread:54012 [sender.py:send():303] send: run
+2023-01-10 00:51:00,974 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: check_version
+2023-01-10 00:51:00,974 INFO    SenderThread:54012 [dir_watcher.py:__init__():216] watching files in: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files
+2023-01-10 00:51:00,974 INFO    SenderThread:54012 [sender.py:_start_run_threads():928] run started: jzg6frnw with start time 1673308260.243486
+2023-01-10 00:51:00,974 DEBUG   SenderThread:54012 [sender.py:send():303] send: summary
+2023-01-10 00:51:00,974 INFO    SenderThread:54012 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-01-10 00:51:00,975 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: check_version
+2023-01-10 00:51:01,423 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: run_start
+2023-01-10 00:51:01,431 DEBUG   HandlerThread:54012 [system_info.py:__init__():31] System info init
+2023-01-10 00:51:01,431 DEBUG   HandlerThread:54012 [system_info.py:__init__():46] System info init done
+2023-01-10 00:51:01,431 INFO    HandlerThread:54012 [system_monitor.py:start():150] Starting system monitor
+2023-01-10 00:51:01,431 INFO    SystemMonitor:54012 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2023-01-10 00:51:01,432 INFO    HandlerThread:54012 [system_monitor.py:probe():171] Collecting system info
+2023-01-10 00:51:01,432 INFO    SystemMonitor:54012 [interfaces.py:start():168] Started cpu
+2023-01-10 00:51:01,432 DEBUG   HandlerThread:54012 [system_info.py:probe():195] Probing system
+2023-01-10 00:51:01,432 INFO    SystemMonitor:54012 [interfaces.py:start():168] Started disk
+2023-01-10 00:51:01,435 INFO    SystemMonitor:54012 [interfaces.py:start():168] Started gpuapple
+2023-01-10 00:51:01,436 INFO    SystemMonitor:54012 [interfaces.py:start():168] Started memory
+2023-01-10 00:51:01,436 INFO    SystemMonitor:54012 [interfaces.py:start():168] Started network
+2023-01-10 00:51:01,442 DEBUG   HandlerThread:54012 [system_info.py:_probe_git():180] Probing git
+2023-01-10 00:51:01,468 DEBUG   HandlerThread:54012 [system_info.py:_probe_git():188] Probing git done
+2023-01-10 00:51:01,468 DEBUG   HandlerThread:54012 [system_info.py:probe():241] Probing system done
+2023-01-10 00:51:01,468 DEBUG   HandlerThread:54012 [system_monitor.py:probe():180] {'os': 'macOS-12.6-arm64-arm-64bit', 'python': '3.10.9', 'heartbeatAt': '2023-01-09T23:51:01.432905', 'startedAt': '2023-01-09T23:51:00.223755', 'docker': None, 'cuda': None, 'args': None, 'state': 'running', 'program': 'Fine_tune/final/Token_classification_jnlpb_2_2-jvsc-a5c9b052-26cc-4d52-ac93-058dbcc5b45a79788450-614d-4681-acb6-e54c46f1a913.ipynb', 'root': '/Users/maxhager/Projects2022/BachelorThesis', 'git': {'remote': 'https://github.com/yachty66/Bachelorthesis.git', 'commit': '5a55c78d07acdab7870163beb47bc636661cfc97'}, 'email': 'maxhager28@gmail.com', 'host': 'Maxs-Air-2', 'username': 'maxhager', 'executable': '/Users/maxhager/.virtualenvs/thesis/bin/python', 'cpu_count': 8, 'cpu_count_logical': 8, 'disk': {'total': 460.4317207336426, 'used': 14.358600616455078}, 'gpuapple': {'type': 'arm', 'vendor': 'Apple'}, 'memory': {'total': 16.0}}
+2023-01-10 00:51:01,469 INFO    HandlerThread:54012 [system_monitor.py:probe():181] Finished collecting system info
+2023-01-10 00:51:01,469 INFO    HandlerThread:54012 [system_monitor.py:probe():184] Publishing system info
+2023-01-10 00:51:01,469 DEBUG   HandlerThread:54012 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-01-10 00:51:01,469 DEBUG   HandlerThread:54012 [system_info.py:_save_pip():67] Saving pip packages done
+2023-01-10 00:51:01,470 INFO    HandlerThread:54012 [system_monitor.py:probe():186] Finished publishing system info
+2023-01-10 00:51:01,472 DEBUG   SenderThread:54012 [sender.py:send():303] send: files
+2023-01-10 00:51:01,472 INFO    SenderThread:54012 [sender.py:_save_file():1171] saving file wandb-metadata.json with policy now
+2023-01-10 00:51:01,478 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:51:01,478 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:51:01,481 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:01,481 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:01,481 INFO    HandlerThread:54012 [system_monitor.py:finish():160] Stopping system monitor
+2023-01-10 00:51:01,491 DEBUG   SystemMonitor:54012 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2023-01-10 00:51:01,491 DEBUG   SystemMonitor:54012 [system_monitor.py:_start():137] Finished system metrics aggregation loop
+2023-01-10 00:51:01,491 DEBUG   SystemMonitor:54012 [system_monitor.py:_start():141] Publishing last batch of metrics
+2023-01-10 00:51:01,492 INFO    HandlerThread:54012 [interfaces.py:finish():175] Joined cpu
+2023-01-10 00:51:01,492 INFO    HandlerThread:54012 [interfaces.py:finish():175] Joined disk
+2023-01-10 00:51:01,826 INFO    HandlerThread:54012 [interfaces.py:finish():175] Joined gpuapple
+2023-01-10 00:51:01,826 INFO    HandlerThread:54012 [interfaces.py:finish():175] Joined memory
+2023-01-10 00:51:01,826 INFO    HandlerThread:54012 [interfaces.py:finish():175] Joined network
+2023-01-10 00:51:01,827 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:01,827 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:01,847 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:01,847 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:01,847 DEBUG   SenderThread:54012 [sender.py:send():303] send: stats
+2023-01-10 00:51:01,853 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:01,978 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_created():275] file/dir created: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/wandb-summary.json
+2023-01-10 00:51:01,978 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_created():275] file/dir created: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/wandb-metadata.json
+2023-01-10 00:51:01,978 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_created():275] file/dir created: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/requirements.txt
+2023-01-10 00:51:02,409 INFO    Thread-16 :54012 [upload_job.py:push():143] Uploaded file /var/folders/r9/30wn6mvs2md_xllcvl5lpn0m0000gn/T/tmptdof2z8zwandb/2sys0zn2-wandb-metadata.json
+2023-01-10 00:51:05,631 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:05,631 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:05,655 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:05,655 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:05,656 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:05,656 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:05,677 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:05,677 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:05,745 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:05,993 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_created():275] file/dir created: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:06,488 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:06,489 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:06,509 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:06,510 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:06,510 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:06,510 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:06,529 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:06,529 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:06,530 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:06,530 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:06,552 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:06,552 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:06,553 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:06,553 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:06,573 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:06,573 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:06,617 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:06,617 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:06,639 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:06,640 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:07,106 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:07,137 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:07,304 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:07,999 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:09,101 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:09,101 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:09,127 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:09,127 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:09,128 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:09,128 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:09,149 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:09,149 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:09,149 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:09,149 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:09,171 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:09,171 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:10,008 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:10,268 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:10,269 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:10,296 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:10,296 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:10,297 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:10,297 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:10,339 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:10,339 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:12,010 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:13,015 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:14,020 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:16,654 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:16,654 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:16,677 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:16,677 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:16,697 DEBUG   SenderThread:54012 [sender.py:send():303] send: config
+2023-01-10 00:51:16,699 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:16,699 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:16,699 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:16,699 WARNING SenderThread:54012 [sender.py:send_metric():1127] Seen metric with glob (shouldn't happen)
+2023-01-10 00:51:16,699 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:16,855 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: stop_status
+2023-01-10 00:51:16,858 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: stop_status
+2023-01-10 00:51:17,032 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:18,038 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:18,625 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: partial_history
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: history
+2023-01-10 00:51:18,627 DEBUG   SenderThread:54012 [sender.py:send():303] send: summary
+2023-01-10 00:51:18,628 INFO    SenderThread:54012 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-01-10 00:51:19,042 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/wandb-summary.json
+2023-01-10 00:51:20,044 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:20,487 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: partial_history
+2023-01-10 00:51:20,488 DEBUG   SenderThread:54012 [sender.py:send():303] send: history
+2023-01-10 00:51:20,488 DEBUG   SenderThread:54012 [sender.py:send():303] send: summary
+2023-01-10 00:51:20,488 INFO    SenderThread:54012 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-01-10 00:51:21,049 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:21,049 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/wandb-summary.json
+2023-01-10 00:51:22,058 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:22,087 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: partial_history
+2023-01-10 00:51:22,088 DEBUG   SenderThread:54012 [sender.py:send():303] send: history
+2023-01-10 00:51:22,088 DEBUG   SenderThread:54012 [sender.py:send():303] send: summary
+2023-01-10 00:51:22,088 INFO    SenderThread:54012 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-01-10 00:51:22,089 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: partial_history
+2023-01-10 00:51:22,090 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:22,091 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:22,091 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:22,091 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:22,091 DEBUG   SenderThread:54012 [sender.py:send():303] send: metric
+2023-01-10 00:51:22,091 DEBUG   SenderThread:54012 [sender.py:send():303] send: history
+2023-01-10 00:51:22,091 DEBUG   SenderThread:54012 [sender.py:send():303] send: summary
+2023-01-10 00:51:22,091 INFO    SenderThread:54012 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-01-10 00:51:22,092 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:22,092 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:22,127 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:22,127 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:22,566 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: partial_history
+2023-01-10 00:51:22,566 DEBUG   SenderThread:54012 [sender.py:send():303] send: history
+2023-01-10 00:51:22,566 DEBUG   SenderThread:54012 [sender.py:send():303] send: summary
+2023-01-10 00:51:22,567 INFO    SenderThread:54012 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-01-10 00:51:22,568 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:22,568 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:22,589 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:22,589 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:23,056 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: pause
+2023-01-10 00:51:23,057 INFO    HandlerThread:54012 [handler.py:handle_request_pause():696] stopping system metrics thread or process
+2023-01-10 00:51:23,059 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:23,059 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/wandb-summary.json
+2023-01-10 00:51:23,115 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: resume
+2023-01-10 00:51:23,115 INFO    HandlerThread:54012 [handler.py:handle_request_resume():687] starting system metrics thread or process
+2023-01-10 00:51:23,116 DEBUG   SenderThread:54012 [sender.py:send():303] send: telemetry
+2023-01-10 00:51:23,117 DEBUG   SenderThread:54012 [sender.py:send():303] send: exit
+2023-01-10 00:51:23,117 INFO    SenderThread:54012 [sender.py:send_exit():442] handling exit code: 0
+2023-01-10 00:51:23,121 INFO    SenderThread:54012 [sender.py:send_exit():444] handling runtime: 21
+2023-01-10 00:51:23,122 INFO    SenderThread:54012 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-01-10 00:51:23,122 INFO    SenderThread:54012 [sender.py:send_exit():450] send defer
+2023-01-10 00:51:23,124 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:23,124 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 0
+2023-01-10 00:51:23,124 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:23,124 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 0
+2023-01-10 00:51:23,124 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 1
+2023-01-10 00:51:23,125 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:23,125 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 1
+2023-01-10 00:51:23,125 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:23,125 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 1
+2023-01-10 00:51:23,125 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 2
+2023-01-10 00:51:23,125 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:23,125 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 2
+2023-01-10 00:51:23,125 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:23,125 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 2
+2023-01-10 00:51:23,125 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 3
+2023-01-10 00:51:23,125 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:23,125 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 3
+2023-01-10 00:51:23,125 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:23,125 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 3
+2023-01-10 00:51:23,125 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 4
+2023-01-10 00:51:23,125 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:23,126 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 4
+2023-01-10 00:51:23,126 DEBUG   SenderThread:54012 [sender.py:send():303] send: summary
+2023-01-10 00:51:23,127 INFO    SenderThread:54012 [sender.py:_save_file():1171] saving file wandb-summary.json with policy end
+2023-01-10 00:51:23,127 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:23,127 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 4
+2023-01-10 00:51:23,127 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 5
+2023-01-10 00:51:23,127 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:23,127 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 5
+2023-01-10 00:51:23,127 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:23,127 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 5
+2023-01-10 00:51:23,520 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 6
+2023-01-10 00:51:23,520 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:23,520 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 6
+2023-01-10 00:51:23,520 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:23,520 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 6
+2023-01-10 00:51:24,064 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:24,065 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/config.yaml
+2023-01-10 00:51:24,065 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/wandb-summary.json
+2023-01-10 00:51:24,127 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: poll_exit
+2023-01-10 00:51:25,043 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 7
+2023-01-10 00:51:25,044 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: poll_exit
+2023-01-10 00:51:25,047 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:25,047 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 7
+2023-01-10 00:51:25,048 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:25,048 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 7
+2023-01-10 00:51:25,048 INFO    SenderThread:54012 [dir_watcher.py:finish():362] shutting down directory watcher
+2023-01-10 00:51:25,068 INFO    Thread-13 :54012 [dir_watcher.py:_on_file_modified():292] file/dir modified: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:25,068 INFO    SenderThread:54012 [dir_watcher.py:finish():392] scan: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files
+2023-01-10 00:51:25,068 INFO    SenderThread:54012 [dir_watcher.py:finish():406] scan save: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/requirements.txt requirements.txt
+2023-01-10 00:51:25,069 INFO    SenderThread:54012 [dir_watcher.py:finish():406] scan save: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log output.log
+2023-01-10 00:51:25,070 INFO    SenderThread:54012 [dir_watcher.py:finish():406] scan save: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/config.yaml config.yaml
+2023-01-10 00:51:25,071 INFO    SenderThread:54012 [dir_watcher.py:finish():406] scan save: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/wandb-summary.json wandb-summary.json
+2023-01-10 00:51:25,071 INFO    SenderThread:54012 [dir_watcher.py:finish():406] scan save: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/wandb-metadata.json wandb-metadata.json
+2023-01-10 00:51:25,071 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 8
+2023-01-10 00:51:25,072 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:25,072 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 8
+2023-01-10 00:51:25,072 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:25,072 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 8
+2023-01-10 00:51:25,073 INFO    SenderThread:54012 [file_pusher.py:finish():168] shutting down file pusher
+2023-01-10 00:51:25,128 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: poll_exit
+2023-01-10 00:51:25,128 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: poll_exit
+2023-01-10 00:51:25,903 INFO    Thread-20 :54012 [upload_job.py:push():143] Uploaded file /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/wandb-summary.json
+2023-01-10 00:51:25,914 INFO    Thread-17 :54012 [upload_job.py:push():143] Uploaded file /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/requirements.txt
+2023-01-10 00:51:25,922 INFO    Thread-19 :54012 [upload_job.py:push():143] Uploaded file /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/config.yaml
+2023-01-10 00:51:25,924 INFO    Thread-18 :54012 [upload_job.py:push():143] Uploaded file /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/files/output.log
+2023-01-10 00:51:26,130 INFO    Thread-12 (_thread_body):54012 [sender.py:transition_state():463] send defer: 9
+2023-01-10 00:51:26,131 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:26,131 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 9
+2023-01-10 00:51:26,131 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:26,132 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 9
+2023-01-10 00:51:26,132 INFO    SenderThread:54012 [file_pusher.py:join():173] waiting for file pusher
+2023-01-10 00:51:26,132 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 10
+2023-01-10 00:51:26,132 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:26,132 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 10
+2023-01-10 00:51:26,132 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:26,132 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 10
+2023-01-10 00:51:26,138 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: poll_exit
+2023-01-10 00:51:26,341 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 11
+2023-01-10 00:51:26,341 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: poll_exit
+2023-01-10 00:51:26,342 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:26,342 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 11
+2023-01-10 00:51:26,342 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:26,342 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 11
+2023-01-10 00:51:26,342 INFO    SenderThread:54012 [sender.py:transition_state():463] send defer: 12
+2023-01-10 00:51:26,343 DEBUG   SenderThread:54012 [sender.py:send():303] send: final
+2023-01-10 00:51:26,343 DEBUG   SenderThread:54012 [sender.py:send():303] send: footer
+2023-01-10 00:51:26,343 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: defer
+2023-01-10 00:51:26,343 INFO    HandlerThread:54012 [handler.py:handle_request_defer():162] handle defer: 12
+2023-01-10 00:51:26,343 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: defer
+2023-01-10 00:51:26,343 INFO    SenderThread:54012 [sender.py:send_request_defer():459] handle sender defer: 12
+2023-01-10 00:51:26,345 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: poll_exit
+2023-01-10 00:51:26,346 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: server_info
+2023-01-10 00:51:26,346 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: get_summary
+2023-01-10 00:51:26,346 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: sampled_history
+2023-01-10 00:51:26,347 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: poll_exit
+2023-01-10 00:51:26,347 DEBUG   SenderThread:54012 [sender.py:send_request():317] send_request: server_info
+2023-01-10 00:51:27,087 DEBUG   HandlerThread:54012 [handler.py:handle_request():139] handle_request: shutdown
+2023-01-10 00:51:27,088 INFO    HandlerThread:54012 [handler.py:finish():814] shutting down handler
+2023-01-10 00:51:27,348 INFO    WriterThread:54012 [datastore.py:close():279] close: /Users/maxhager/Projects2022/BachelorThesis/Fine_tune/final/wandb/run-20230110_005100-jzg6frnw/run-jzg6frnw.wandb
+2023-01-10 00:51:28,087 INFO    SenderThread:54012 [sender.py:finish():1331] shutting down sender
+2023-01-10 00:51:28,088 INFO    SenderThread:54012 [file_pusher.py:finish():168] shutting down file pusher
+2023-01-10 00:51:28,088 INFO    SenderThread:54012 [file_pusher.py:join():173] waiting for file pusher
