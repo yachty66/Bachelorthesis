@@ -27,7 +27,8 @@ Supervised Named Entity Recognition
 - [x] add wandb 
 - [x] add push to hub
 - [x] implement into my code
-- 
+- [ ] import image from covid news paper into notebook
+- [ ] next steps
 
 ## Notes
 
@@ -176,6 +177,11 @@ JNLPBA
 - i, b weglassen
 - does he run notebooks over night or how is he doing this?
 - motivation from amazon paper
+
+### Meeting Matthias 09.01.2023
+- 
+#### Questions
+- how are we going to do the training setup
 
 Questions Matthias:
 
