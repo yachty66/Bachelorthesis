@@ -290,3 +290,4 @@
 2023-01-10 00:51:28,087 INFO    SenderThread:54012 [sender.py:finish():1331] shutting down sender
 2023-01-10 00:51:28,088 INFO    SenderThread:54012 [file_pusher.py:finish():168] shutting down file pusher
 2023-01-10 00:51:28,088 INFO    SenderThread:54012 [file_pusher.py:join():173] waiting for file pusher
+2023-01-10 02:42:46,035 INFO    MainThread:54012 [internal.py:handle_exit():77] Internal process exited
