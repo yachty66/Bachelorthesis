@@ -1,5 +1,7 @@
 # Bachelorthesis
 
+I think I have really sensitive information about the behavior of some persons i.e. the behavior of some people. 
+
 - [x] Datensatz finden
 - [x] add read papers to xzotero and try to create a label for Thesis
 - [x] Check if i should read GLARA: Graph-based Labeling Rule Augmentation for Weakly
@@ -27,8 +29,11 @@ Supervised Named Entity Recognition
 - [x] add wandb 
 - [x] add push to hub
 - [x] implement into my code
-- [ ] import image from covid news paper into notebook
-- [ ] next steps
+- [ ] train on 50 week - if no plausible results ask Matthias again
+- [ ] train seq2seq on strong
+- [ ] train seq2seq on 100 week 
+- [ ] train seq2seq on 50 week 
+
 
 ## Notes
 
@@ -178,8 +183,13 @@ JNLPBA
 - does he run notebooks over night or how is he doing this?
 - motivation from amazon paper
 
-### Meeting Matthias 09.01.2023
-- 
+### Meeting Matthias 19.01.2023
+- add confusion matrix to metrics
+- train token classification on less data to make clear what was in the three original points outlined
+
+### Meeting Matthias 20.01.2023
+- what does he think which metrics are important
+
 #### Questions
 - how are we going to do the training setup
 
