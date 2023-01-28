@@ -29,6 +29,7 @@ Supervised Named Entity Recognition
 - [x] add wandb 
 - [x] add push to hub
 - [x] implement into my code
+- [ ] fix failing token assignment
 - [ ] train on 50 week - if no plausible results ask Matthias again
 - [ ] train seq2seq on strong
 - [ ] train seq2seq on 100 week 

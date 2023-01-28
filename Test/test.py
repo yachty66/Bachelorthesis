@@ -1,21 +1,38 @@
-# create a basic confusion matrix
-from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
-y_true = [2, 0, 2, 2, 0, 1]
-y_pred = [0, 0, 2, 2, 0, 2]
+from sklearn.metrics import confusion_matrix
+import numpy as np
 
-cm = confusion_matrix(y_true, y_pred)
+# your true and predicted labels
+true_labels = [0,1,2,3,4,5,5,5]
+predicted_labels = [0,1,2,3,4,5,5,4]
 
-#print matrix
-print(cm)
+# your mapping
+mapping = {'O': 0, 'rna': 1, 'dna': 2, 'cell_line': 3, 'cell_type': 4, 'protein': 5}
 
-#plot matrix
-plt.matshow(cm)
-plt.title('Confusion matrix')
+# create the confusion matrix
+cm = confusion_matrix(true_labels, predicted_labels)
+cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+
+plt.imshow(cm, cmap='Blues')
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("True")
 plt.colorbar()
-plt.ylabel('True label')
-plt.xlabel('Predicted label')
+
+# reverse the mapping to get the labels from the values
+reverse_mapping = {v: k for k, v in mapping.items()}
+print(reverse_mapping)
+# set the x and y axis labels using the reverse_mapping
+ax = plt.gca()
+print([reverse_mapping[i] for i in range(len(mapping))])
+#set xticks and yticks according to the mapping
+ax.set_xticks([i for i in range(len(mapping))])
+ax.set_yticks([i for i in range(len(mapping))])
+ax.set_xticklabels([reverse_mapping[i] for i in range(len(mapping))])
+ax.set_yticklabels([reverse_mapping[i] for i in range(len(mapping))])
+
+
+#ax.set_xticklabels([reverse_mapping[i] for i in range(len(mapping))])
+#ax.set_yticklabels([reverse_mapping[i] for i in range(len(mapping))])
 plt.show()
-
-
-#what I could do is i import my notebook
