@@ -35,7 +35,7 @@ if __name__ == "__main__":
     import nltk
     from dataset import JnlpbDataset
 
-    nltk.download("punkt")
+    #nltk.download("punkt")
     random.seed(42)
 
     # wandb.init(project="Bachelor_Thesis", entity="maxhager28", name="Seq2seq_jnlpba_strong_test_100")
@@ -213,8 +213,9 @@ if __name__ == "__main__":
 
         def validation_step(self, batch, batch_idx):
             #print(len(batch["source_ids"]))
-            #print(len(batch["tokens"]))
-            
+            #print(len(batch["source_ids"]))
+            #print(batch["source_ids"])
+
             outputs = []
             targets = []
             all_text = []
@@ -377,16 +378,15 @@ if __name__ == "__main__":
             val_dataset = get_dataset(
                 tokenizer=self.tokenizer, type_path="validation", args=self.hparam
             )
-            print(f"val_dataset: {len(val_dataset)}")
-            #print(val_dataset[0])
-            '''dataloader = DataLoader(val_dataset, batch_size=self.hparam.eval_batch_size, num_workers=2)
-            for i, batch in enumerate(dataloader):
-                # process each batch here
-                print(batch)'''
-
-            return DataLoader(
-                val_dataset, batch_size=self.hparam.eval_batch_size, num_workers=2
-            )
+            l_tokens = val_dataset[0]["tokens"]
+            dataloader = DataLoader(val_dataset, batch_size=self.hparam.eval_batch_size, num_workers=2)
+            val_dataloader_list = list(dataloader)
+            for i, batch in enumerate(val_dataloader_list):
+                batch["tokens"] = l_tokens[:self.hparam.eval_batch_size]
+                l_tokens = l_tokens[self.hparam.eval_batch_size:]
+                val_dataloader_list[i] = batch
+            dataloader = DataLoader(val_dataloader_list)
+            return dataloader
 
     logger = logging.getLogger(__name__)
 
