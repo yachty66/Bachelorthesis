@@ -375,17 +375,19 @@ if __name__ == "__main__":
             return dataloader
 
         def val_dataloader(self):
-            val_dataset = get_dataset(
-                tokenizer=self.tokenizer, type_path="validation", args=self.hparam
-            )
+            val_dataset = get_dataset(tokenizer=self.tokenizer, type_path="validation", args=self.hparam)
             l_tokens = val_dataset[0]["tokens"]
             dataloader = DataLoader(val_dataset, batch_size=self.hparam.eval_batch_size, num_workers=2)
-            val_dataloader_list = list(dataloader)
+            '''val_dataloader_list = list(dataloader)
             for i, batch in enumerate(val_dataloader_list):
-                batch["tokens"] = l_tokens[:self.hparam.eval_batch_size]
+                # Get shape of batch
+                print(batch["target_ids"].shape)
+                # Store modified tokens in a new key
+                batch["new_tokens"] = l_tokens[:self.hparam.eval_batch_size]
                 l_tokens = l_tokens[self.hparam.eval_batch_size:]
                 val_dataloader_list[i] = batch
-            dataloader = DataLoader(val_dataloader_list)
+                print(batch["target_ids"].shape)
+            dataloader = DataLoader(val_dataloader_list)'''
             return dataloader
 
     logger = logging.getLogger(__name__)
