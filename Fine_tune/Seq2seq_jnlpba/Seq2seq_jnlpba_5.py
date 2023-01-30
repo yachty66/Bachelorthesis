@@ -23,8 +23,8 @@ if __name__ == "__main__":
     from itertools import chain
     from string import punctuation
 
-    # import wandb
-    # from wandb import AlertLevel
+    import wandb
+    from wandb import AlertLevel
     from pytorch_lightning import Trainer
 
     # from pytorch_lightning.loggers import WandbLogger
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     #nltk.download("punkt")
     random.seed(42)
 
-    # wandb.init(project="Bachelor_Thesis", entity="maxhager28", name="Seq2seq_jnlpba_strong_test_100")
+    wandb.init(project="Bachelor_Thesis", entity="maxhager28", name="Seq2seq_jnlpba_strong_test_100")
 
     def set_seed(seed):
         random.seed(seed)
@@ -215,7 +215,6 @@ if __name__ == "__main__":
             #print(len(batch["source_ids"]))
             #print(len(batch["source_ids"]))
             #print(batch["source_ids"])
-
             outputs = []
             targets = []
             all_text = []
@@ -230,7 +229,6 @@ if __name__ == "__main__":
             outs = model.model.generate(
                 input_ids=input_ids, attention_mask=attention_mask
             )
-
             dec = [
                 tokenizer.decode(
                     ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
@@ -243,15 +241,31 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["target_ids"]
             ]
-
             texts = [
                 tokenizer.decode(
                     ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
                 ).strip()
                 for ids in batch["source_ids"]
             ]
-            true_label = self.label_true(target, batch["tokens"])
-            predicted_label = self.label_pred(dec, batch["tokens"])
+            #print(batch["tokens"])
+            #print(self.counter)
+            #print(self.hparam.eval_batch_size + self.counter)
+            true_label = self.label_true(target, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
+            predicted_label = self.label_pred(dec, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
+            self.counter += self.hparam.eval_batch_size 
+            #print(len(batch["tokens"][self.counter:len(batch) + self.counter]))
+            #print(len(target))
+            #print(len(dec))
+            print("target")
+            print(target)
+            print(30*"-")
+            print("true label")
+            print(true_label)
+            print(30*"-")
+            print("predicted label")
+            print(predicted_label)
+            print(30*"-")
+            
             pred_mapped = self.map_tags(predicted_label)
             true_mapped = self.map_tags(true_label)
             self.true.extend(np.array(true_mapped).flatten())
@@ -261,6 +275,7 @@ if __name__ == "__main__":
             return {"val_loss": val_loss}
 
         def validation_epoch_end(self, outputs):
+            self.counter = 0
             print(f"val_epoch: {len(self.pred)}")
             true_label = np.concatenate(self.true)
             predicted_label = np.concatenate(self.pred)
@@ -285,13 +300,13 @@ if __name__ == "__main__":
             ax.set_yticks([i for i in range(len(mapping))])
             ax.set_xticklabels([reverse_mapping[i] for i in range(len(mapping))])
             ax.set_yticklabels([reverse_mapping[i] for i in range(len(mapping))])
-            # wandb.log({"confusion_matrix": wandb.Image(plt)})
+            wandb.log({"confusion_matrix": wandb.Image(plt)})
             plt.clf()
             accuracy = accuracy_score(true_label, predicted_label)
             precision, recall, fscore, support = precision_recall_fscore_support(
                 true_label, predicted_label, zero_division=1, average="weighted"
             )
-            # wandb.log({'precision': precision, 'recall': recall, 'f1': fscore})
+            wandb.log({'precision': precision, 'recall': recall, 'f1': fscore})
 
         def configure_optimizers(self):
             model = self.model
@@ -376,7 +391,7 @@ if __name__ == "__main__":
 
         def val_dataloader(self):
             val_dataset = get_dataset(tokenizer=self.tokenizer, type_path="validation", args=self.hparam)
-            l_tokens = val_dataset[0]["tokens"]
+            #l_tokens = val_dataset[0]["tokens"]
             dataloader = DataLoader(val_dataset, batch_size=self.hparam.eval_batch_size, num_workers=2)
             '''val_dataloader_list = list(dataloader)
             for i, batch in enumerate(val_dataloader_list):
@@ -429,7 +444,7 @@ if __name__ == "__main__":
         adam_epsilon=1e-8,
         warmup_steps=0,
         train_batch_size=8,  # 4/2/1 if t5-small not working
-        eval_batch_size=4,
+        eval_batch_size=8,
         num_train_epochs=3,
         gradient_accumulation_steps=16,
         # n_gpu=1,
@@ -493,9 +508,9 @@ if __name__ == "__main__":
 
     trainer.fit(model)
 
-    """wandb.alert(
+    wandb.alert(
         title="End of training.", 
         text="Training finished successfully.",
     )
 
-    wandb.finish()"""
+    wandb.finish()
