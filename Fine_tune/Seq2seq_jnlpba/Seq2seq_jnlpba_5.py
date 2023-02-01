@@ -172,11 +172,7 @@ if __name__ == "__main__":
                 labels=lm_labels,
             )
 
-        def _step(self, batch):
-
-            #print(len(batch["target_ids"]))
-            #print(len(batch["tokens"]))
-            
+        def _step(self, batch):            
             lm_labels = batch["target_ids"]
             lm_labels[lm_labels[:, :] == self.tokenizer.pad_token_id] = -100
 
@@ -212,9 +208,6 @@ if __name__ == "__main__":
             return result
 
         def validation_step(self, batch, batch_idx):
-            #print(len(batch["source_ids"]))
-            #print(len(batch["source_ids"]))
-            #print(batch["source_ids"])
             outputs = []
             targets = []
             all_text = []
@@ -247,25 +240,9 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["source_ids"]
             ]
-            #print(batch["tokens"])
-            #print(self.counter)
-            #print(self.hparam.eval_batch_size + self.counter)
             true_label = self.label_true(target, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
             predicted_label = self.label_pred(dec, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
             self.counter += self.hparam.eval_batch_size 
-            #print(len(batch["tokens"][self.counter:len(batch) + self.counter]))
-            #print(len(target))
-            #print(len(dec))
-            print("target")
-            print(target)
-            print(30*"-")
-            print("true label")
-            print(true_label)
-            print(30*"-")
-            print("predicted label")
-            print(predicted_label)
-            print(30*"-")
-            
             pred_mapped = self.map_tags(predicted_label)
             true_mapped = self.map_tags(true_label)
             self.true.extend(np.array(true_mapped).flatten())
@@ -274,11 +251,22 @@ if __name__ == "__main__":
             self.log("val_loss", val_loss)
             return {"val_loss": val_loss}
 
+        def val_preprocessing(self, true, pred):
+            #i just need to get the same index span of the true labels from the predictions
+            #get numbers in pred at positions where in true is a number ! 0 
+            new_pred = []
+            for i in range(len(true)):
+                if true[i] != 0:
+                    new_pred.append(pred[i])
+            new_true = [i for i in true if i != 0]
+            return new_true, new_pred
+            
+
         def validation_epoch_end(self, outputs):
             self.counter = 0
-            print(f"val_epoch: {len(self.pred)}")
             true_label = np.concatenate(self.true)
             predicted_label = np.concatenate(self.pred)
+            true_label, predicted_label = self.val_preprocessing(true_label, predicted_label)
             cm = confusion_matrix(true_label, predicted_label)
             cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
             plt.imshow(cm, cmap="Blues")
@@ -306,7 +294,7 @@ if __name__ == "__main__":
             precision, recall, fscore, support = precision_recall_fscore_support(
                 true_label, predicted_label, zero_division=1, average="weighted"
             )
-            wandb.log({'precision': precision, 'recall': recall, 'f1': fscore})
+            wandb.log({'precision': precision, 'recall': recall, 'f1': fscore, 'accuracy': accuracy})
 
         def configure_optimizers(self):
             model = self.model
@@ -391,18 +379,7 @@ if __name__ == "__main__":
 
         def val_dataloader(self):
             val_dataset = get_dataset(tokenizer=self.tokenizer, type_path="validation", args=self.hparam)
-            #l_tokens = val_dataset[0]["tokens"]
             dataloader = DataLoader(val_dataset, batch_size=self.hparam.eval_batch_size, num_workers=2)
-            '''val_dataloader_list = list(dataloader)
-            for i, batch in enumerate(val_dataloader_list):
-                # Get shape of batch
-                print(batch["target_ids"].shape)
-                # Store modified tokens in a new key
-                batch["new_tokens"] = l_tokens[:self.hparam.eval_batch_size]
-                l_tokens = l_tokens[self.hparam.eval_batch_size:]
-                val_dataloader_list[i] = batch
-                print(batch["target_ids"].shape)
-            dataloader = DataLoader(val_dataloader_list)'''
             return dataloader
 
     logger = logging.getLogger(__name__)

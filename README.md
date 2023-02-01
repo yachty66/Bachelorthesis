@@ -29,12 +29,10 @@ Supervised Named Entity Recognition
 - [x] add wandb 
 - [x] add push to hub
 - [x] implement into my code
-- [ ] check if correct labels are outputtet in my var which holds the values for the metric eval
-- [ ] fix failing token assignment
-- [ ] train on 50 week - if no plausible results ask Matthias again
-- [ ] train seq2seq on strong
-- [ ] train seq2seq on 100 week 
-- [ ] train seq2seq on 50 week 
+- [x] check if correct labels are outputtet in my var which holds the values for the metric eval
+- [ ] bring toknized predictions back to original format
+- [ ] make a training and see if metrics are also so high like in seq2seq
+- [ ] next steps
 
 
 ## Notes
