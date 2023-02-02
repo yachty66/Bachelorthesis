@@ -1,0 +1,56 @@
+protein: bcl-3
+ protein: granulocyte-macrophage colony-stimulating factor
+ protein: erythropoietin
+ cell_type: proliferating human erythroid precursors
+protein: bcl-3
+ dna: proto-oncogene
+ dna: t ( 14 
+ 19 )
+protein: bcl-3
+ protein: granulocyte-macrophage colony-stimulating factor
+ protein: erythropoietin
+ cell_type: proliferating human erythroid precursors
+protein: bcl-3
+ dna: proto-oncogene
+ dna: t ( 14 
+ 19 )
+protein: bcl-3
+ protein: granulocyte-macrophage colony-stimulating factor
+ protein: erythropoietin
+ cell_type: proliferating human erythroid precursors
+protein: bcl-3
+ dna: proto-oncogene
+ dna: t ( 14 
+ 19 )
+protein: bcl-3
+ protein: granulocyte-macrophage colony-stimulating factor
+ protein: erythropoietin
+ cell_type: proliferating human erythroid precursors
+protein: bcl-3
+ dna: proto-oncogene
+ dna: t ( 14 
+ 19 )
+protein: bcl-3
+ protein: granulocyte-macrophage colony-stimulating factor
+ protein: erythropoietin
+ cell_type: proliferating human erythroid precursors
+protein: bcl-3
+ dna: proto-oncogene
+ dna: t ( 14 
+ 19 )
+protein: bcl-3
+ protein: granulocyte-macrophage colony-stimulating factor
+ protein: erythropoietin
+ cell_type: proliferating human erythroid precursors
+protein: bcl-3
+ dna: proto-oncogene
+ dna: t ( 14 
+ 19 )
+protein: bcl-3
+ protein: granulocyte-macrophage colony-stimulating factor
+ protein: erythropoietin
+ cell_type: proliferating human erythroid precursors
+protein: bcl-3
+ dna: proto-oncogene
+ dna: t ( 14 
+ 19 )

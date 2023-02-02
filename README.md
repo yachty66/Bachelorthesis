@@ -30,9 +30,21 @@ Supervised Named Entity Recognition
 - [x] add push to hub
 - [x] implement into my code
 - [x] check if correct labels are outputtet in my var which holds the values for the metric eval
-- [ ] bring toknized predictions back to original format
-- [ ] make a training and see if metrics are also so high like in seq2seq
-- [ ] next steps
+- [x] fix problem that notebook is not running
+    - [x] try to find code which I wrote for printing and save somewhere and if not available copy module from vs to notebook
+- [x] run notebook on test run with 10 samples
+- [x] run on full data
+- [ ] check if results are satisfying (i.e. higher accuracy than 0) if yes create code who is uploading my model to wandb 
+    - [ ] test if i can load model
+- [ ] create same evaluation format for token classification
+    - [x] print first 100 tokens in text and not tokenized and check if it happens that two of the same attributes are side by side 
+    - [ ] remove in dataset each row where duplicates side by side 
+    - [ ] aggregate numbers and drop O function  
+    - [ ] make a test run with old and new format and check if metric values are the same 
+- [ ] test if i can load the model 
+- [ ] next steps 
+
+
 
 
 ## Notes

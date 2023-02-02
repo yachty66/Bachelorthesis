@@ -24,15 +24,28 @@ task = "ner"  # Should be one of "ner", "pos" or "chunk"
 model_checkpoint = "bert-base-cased"
 batch_size = 8
 
-jnlpba = load_dataset("jnlpba", split=["train[:20]", "validation[:20]"])
+jnlpba = load_dataset("jnlpba", split=["train", "validation"])
 jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
 
 class JnlpbDataset:
     def __init__(self, dataset, portion, type_path):
         self.dataset = dataset[type_path]
         self.portion = portion
+        self.remove()
         self.merge()
         self.apply()
+        
+    def remove_rows(self, row):
+        ner_tags = row["ner_tags"]
+        for i in range(len(ner_tags) - 1):
+            if ner_tags[i] != 0 and ner_tags[i] == ner_tags[i + 1]:
+                return False
+        return True
+                
+    def remove(self):
+        df = pd.DataFrame(self.dataset)
+        df = df[df.apply(self.remove_rows, axis=1)]
+        self.dataset = Dataset.from_pandas(df)
 
     def map_tags(self, row):
         mapping = {
@@ -153,10 +166,10 @@ datasets = DatasetDict({"train": dataset_train, "validation": dataset_validation
 df = dataset_train.to_pandas()
 label_list = list(set([tag for row in df["ner_tags"] for tag in row]))
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
-#0, 0, 0, 0, 0, 0, 0, 5, 0, 5, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
 assert isinstance(tokenizer, transformers.PreTrainedTokenizerFast)
 
 label_all_tokens = True
+
 
 def tokenize_and_align_labels(examples):
     tokenized_inputs = tokenizer(
@@ -179,12 +192,11 @@ def tokenize_and_align_labels(examples):
     tokenized_inputs["labels"] = labels
     return tokenized_inputs
 
+
 tokenized_datasets = datasets.map(tokenize_and_align_labels, batched=True)
 model = AutoModelForTokenClassification.from_pretrained(
     model_checkpoint, num_labels=len(label_list)
 )
-print(datasets["validation"][0])
-print(tokenized_datasets["validation"][0])
 
 model_name = model_checkpoint.split("/")[-1]
 args = TrainingArguments(
@@ -223,7 +235,6 @@ def custom_compute_metrics(p, eval_dataset):
     true_predictions = np.array(
         [item for sublist in true_predictions for item in sublist]
     )
-
     true_labels = np.array([item for sublist in true_labels for item in sublist])
     cm = confusion_matrix(true_labels, true_predictions)
     cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
@@ -232,7 +243,6 @@ def custom_compute_metrics(p, eval_dataset):
     plt.xlabel("Predicted")
     plt.ylabel("True")
     plt.colorbar()
-
     mapping = {"O": 0, "rna": 1, "dna": 2, "cell_line": 3, "cell_type": 4, "protein": 5}
     reverse_mapping = {v: k for k, v in mapping.items()}
     ax = plt.gca()
@@ -254,7 +264,6 @@ def custom_compute_metrics(p, eval_dataset):
         "accuracy": accuracy,
         "support": support,
     }
-
 
 trainer = Trainer(
     model,

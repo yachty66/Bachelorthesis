@@ -72,23 +72,14 @@ if __name__ == "__main__":
             return True
 
         def label_true(self, incoming, actual):
-            #print("incoming:")
-            #print(len(incoming))
-            #print(30 * "_")
             l_targets = [
                 [tuple_list[0] for tuple_list in sublist] for sublist in actual
             ]
-            #print("target:")
-            #print(len(l_targets))
-            #print(30 * "_")
-            l_predictions = [
-                [
-                    {e.split(":")[0].strip(): e.split(":")[1].strip()}
-                    for e in x.split(";")
-                    if e
-                ]
-                for x in incoming
-            ]
+            l_predictions = []
+            for x in incoming:
+                result = re.split(";(?![^\(]*\))", x)
+                result = [x.strip() for x in result]
+                l_predictions.append([{e.split(":")[0].strip(): e.split(":")[1].strip()} for e in result if e])
             result = []
             for inner_list in l_targets:
                 outcome_inner = []
@@ -105,9 +96,6 @@ if __name__ == "__main__":
                     if not found:
                         outcome_inner.append("O")
                 result.append(outcome_inner)
-            #print("result:")
-            #print(len(result))
-            #print(30 * "_")
             return result
 
         def label_pred(self, incoming, actual):
@@ -207,6 +195,16 @@ if __name__ == "__main__":
             result = [[mapping[tag] for tag in tags] for tags in lst]
             return result
 
+        def val_preprocessing(self, true, pred):
+            #i just need to get the same index span of the true labels from the predictions
+            #get numbers in pred at positions where in true is a number ! 0 
+            new_pred = []
+            for i in range(len(true)):
+                if true[i] != 0:
+                    new_pred.append(pred[i])
+            new_true = [i for i in true if i != 0]
+            return new_true, new_pred    
+            
         def validation_step(self, batch, batch_idx):
             outputs = []
             targets = []
@@ -249,24 +247,34 @@ if __name__ == "__main__":
             self.pred.extend(np.array(pred_mapped).flatten())
             val_loss = self._step(batch)
             self.log("val_loss", val_loss)
-            return {"val_loss": val_loss}
-
-        def val_preprocessing(self, true, pred):
-            #i just need to get the same index span of the true labels from the predictions
-            #get numbers in pred at positions where in true is a number ! 0 
-            new_pred = []
-            for i in range(len(true)):
-                if true[i] != 0:
-                    new_pred.append(pred[i])
-            new_true = [i for i in true if i != 0]
-            return new_true, new_pred
-            
+       
+            '''print(dec)
+            print(30*"-")
+            print(target)
+            print(30*"-")
+            print(predicted_label)
+            print(30*"-")'''            
+            #here i want to print my short predicted labels 
+            #ich muss meine predicted labels in preprocess function geben und was zurück kommt printen
+            #print(self.val_preprocessing(true_label, predicted_label))
+            return {"val_loss": val_loss}            
 
         def validation_epoch_end(self, outputs):
             self.counter = 0
+            '''for i in range(len(self.true)):
+                print("true")
+                print(self.true[i])
+                print("pred")
+                print(self.pred[i])'''
             true_label = np.concatenate(self.true)
             predicted_label = np.concatenate(self.pred)
             true_label, predicted_label = self.val_preprocessing(true_label, predicted_label)
+            #print(true_label)
+            '''print("----------")
+            print(true_label)
+            print("----------")
+            print(predicted_label)
+            print("----------")'''
             cm = confusion_matrix(true_label, predicted_label)
             cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
             plt.imshow(cm, cmap="Blues")
@@ -474,7 +482,7 @@ if __name__ == "__main__":
     def get_dataset(tokenizer, type_path, args):
         tokenizer.max_length = args.max_seq_length
         tokenizer.model_max_length = args.max_seq_length
-        jnlpba = load_dataset("jnlpba", split=["train[:10]", "validation[:10]"])
+        jnlpba = load_dataset("jnlpba", split=["train[:10000]", "validation[:5000]"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
         return JnlpbDataset(
