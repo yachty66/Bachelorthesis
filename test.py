@@ -16,47 +16,24 @@ In the end the result should be
 
 result = [0, 4]
 '''
-l1 = [0,0,4,4,0,4,4,0]
+l1 = [0,0,4,4,0,4,4,4]
 
-l2 = [0,0,4,4,0,4,4,0]
+l2 = [4,0,4,4,0,4,4,0]
 
-'''def process(l1, l2):
-    l_index =[]
-    l_items = []
-    result = [] 
-    for i, elem in enumerate(l1):
-        if elem != 0 and l_items == [] or elem != 0 and elem == l_items[-1]:
-            l_index.append(i)
-            l_items.append(elem)
-        else:
-            if elem == 0 and l_index == []:
-                pass
-            elif l2[l_index[0]:l_index[-1]+1] == l_items:
-                #sollte 
-                #print(l_items)
-                result.append(l_items[0])
-            else:
-                result.append(0)
-            l_index = []
-            l_items = []
-    if l_index != []:
-        if l2[l_index[0]:l_index[-1]+1] == l_items:
-            result.append(elem)
-        else:
-            result.append(0)
-    return result
-            
-print(process(l1, l2))'''
-
-def process(l1, l2):
-    #drop all items where 
-    l_index =[]
-    l_items = []
-    new_true = [] 
+def val_preprocessing(true, pred):
+    new_true = []
     new_pred = []
-    for i, elem in enumerate(l1):
-    
-#process(l1, l2)
+    #if value in true and pred both = 0 remove do noting else add respective values to their respective lists
+    for i in range(len(true)):
+        if true[i] == 0 and pred[i] == 0:
+            continue
+        else:
+            new_true.append(true[i])
+            new_pred.append(pred[i])
+    return new_true, new_pred
+
+print(val_preprocessing(l1, l2))
+            
 
 
 

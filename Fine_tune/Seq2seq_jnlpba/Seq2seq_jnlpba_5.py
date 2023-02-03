@@ -181,7 +181,7 @@ if __name__ == "__main__":
         def training_epoch_end(self, outputs):
             avg_train_loss = torch.stack([x["loss"] for x in outputs]).mean()
             tensorboard_logs = {"avg_train_loss": avg_train_loss}
-            # wandb.log({"avg_train_loss": avg_train_loss})
+            wandb.log({"avg_train_loss": avg_train_loss})
 
         def map_tags(self, lst):
             mapping = {
@@ -196,14 +196,15 @@ if __name__ == "__main__":
             return result
 
         def val_preprocessing(self, true, pred):
-            #i just need to get the same index span of the true labels from the predictions
-            #get numbers in pred at positions where in true is a number ! 0 
+            new_true = []
             new_pred = []
             for i in range(len(true)):
-                if true[i] != 0:
+                if true[i] == 0 and pred[i] == 0:
+                    continue
+                else:
+                    new_true.append(true[i])
                     new_pred.append(pred[i])
-            new_true = [i for i in true if i != 0]
-            return new_true, new_pred    
+            return new_true, new_pred
             
         def validation_step(self, batch, batch_idx):
             outputs = []
@@ -238,6 +239,12 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["source_ids"]
             ]
+            print("dec")
+            print(dec)
+            print(30*"-")
+            print("target")
+            print(target)
+            print(30*"-")
             true_label = self.label_true(target, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
             predicted_label = self.label_pred(dec, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
             self.counter += self.hparam.eval_batch_size 
@@ -247,34 +254,20 @@ if __name__ == "__main__":
             self.pred.extend(np.array(pred_mapped).flatten())
             val_loss = self._step(batch)
             self.log("val_loss", val_loss)
-       
-            '''print(dec)
-            print(30*"-")
-            print(target)
-            print(30*"-")
-            print(predicted_label)
-            print(30*"-")'''            
-            #here i want to print my short predicted labels 
-            #ich muss meine predicted labels in preprocess function geben und was zurück kommt printen
-            #print(self.val_preprocessing(true_label, predicted_label))
             return {"val_loss": val_loss}            
 
         def validation_epoch_end(self, outputs):
             self.counter = 0
-            '''for i in range(len(self.true)):
-                print("true")
-                print(self.true[i])
-                print("pred")
-                print(self.pred[i])'''
             true_label = np.concatenate(self.true)
             predicted_label = np.concatenate(self.pred)
             true_label, predicted_label = self.val_preprocessing(true_label, predicted_label)
+            #print("true")
             #print(true_label)
-            '''print("----------")
-            print(true_label)
-            print("----------")
-            print(predicted_label)
-            print("----------")'''
+            #print(30*"-")
+            #print("pred")
+            #print(predicted_label)
+            #print(30*"-")
+
             cm = confusion_matrix(true_label, predicted_label)
             cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
             plt.imshow(cm, cmap="Blues")
@@ -441,20 +434,7 @@ if __name__ == "__main__":
         val_check_interval=5,
     )
 
-    # jnlpba = load_dataset('jnlpba', split=['train[:1]', "validation[:1]"])
-    # jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
-
     tokenizer = AutoTokenizer.from_pretrained("t5-small")
-
-    # input_dataset_train = JnlpbDataset(tokenizer=tokenizer, dataset=jnlpba, type_path='train', portion=0)
-
-    # dataset_train = input_dataset_train.get_dataset()
-
-    # input_dataset_validation = JnlpbDataset(tokenizer=tokenizer, dataset=jnlpba, type_path='validation', portion=0)
-    # dataset_validation = input_dataset_validation.get_dataset()
-
-    # datasets = DatasetDict({"train": dataset_train, "validation": dataset_validation})
-
     args = argparse.Namespace(**args_dict)
     model = T5FineTuner(args)
 
@@ -470,19 +450,15 @@ if __name__ == "__main__":
         # accelerator='gpu',
         # gpus=args.n_gpu,
         max_epochs=args.num_train_epochs,
-        # early_stop_callback=False,
         precision=32,
-        # amp_level=args.opt_level,
         gradient_clip_val=args.max_grad_norm,
-        # checkpoint_callback=checkpoint_callback,
-        # logger=wandb_logger,
         callbacks=[checkpoint_callback, LoggingCallback()],
     )
 
     def get_dataset(tokenizer, type_path, args):
         tokenizer.max_length = args.max_seq_length
         tokenizer.model_max_length = args.max_seq_length
-        jnlpba = load_dataset("jnlpba", split=["train[:10000]", "validation[:5000]"])
+        jnlpba = load_dataset("jnlpba", split=["train[:100]", "validation[:100]"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
         return JnlpbDataset(

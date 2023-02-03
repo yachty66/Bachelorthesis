@@ -20,7 +20,7 @@ wandb.init(
 )
 random.seed(42)
 
-task = "ner"  # Should be one of "ner", "pos" or "chunk"
+task = "ner" 
 model_checkpoint = "bert-base-cased"
 batch_size = 8
 
@@ -175,9 +175,6 @@ def tokenize_and_align_labels(examples):
     tokenized_inputs = tokenizer(
         examples["tokens"], truncation=True, is_split_into_words=True
     )
-    #print(tokenizer.decode(tokenized_inputs["input_ids"][0]))
-    #print labels 
-    #print(examples["ner_tags"][0])
     labels = []
     for i, label in enumerate(examples[f"{task}_tags"]):
         word_ids = tokenized_inputs.word_ids(batch_index=i)
@@ -214,9 +211,6 @@ args = TrainingArguments(
     num_train_epochs=1,
     weight_decay=0.01,
     # report_to="wandb",
-    # push_to_hub=True,
-    # todo hide token
-    # push_to_hub_token="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"
 )
 
 data_collator = DataCollatorForTokenClassification(tokenizer)
