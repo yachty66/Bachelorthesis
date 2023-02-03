@@ -24,7 +24,7 @@ task = "ner"  # Should be one of "ner", "pos" or "chunk"
 model_checkpoint = "bert-base-cased"
 batch_size = 8
 
-jnlpba = load_dataset("jnlpba", split=["train", "validation"])
+jnlpba = load_dataset("jnlpba", split=["train[:100]", "validation[:100]"])
 jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
 
 class JnlpbDataset:
@@ -175,6 +175,9 @@ def tokenize_and_align_labels(examples):
     tokenized_inputs = tokenizer(
         examples["tokens"], truncation=True, is_split_into_words=True
     )
+    #print(tokenizer.decode(tokenized_inputs["input_ids"][0]))
+    #print labels 
+    #print(examples["ner_tags"][0])
     labels = []
     for i, label in enumerate(examples[f"{task}_tags"]):
         word_ids = tokenized_inputs.word_ids(batch_index=i)
@@ -190,6 +193,8 @@ def tokenize_and_align_labels(examples):
             previous_word_idx = word_idx
         labels.append(label_ids)
     tokenized_inputs["labels"] = labels
+    tokenized_inputs["ner_tags"] = examples["ner_tags"]
+    print(tokenized_inputs["labels"][0])
     return tokenized_inputs
 
 
@@ -232,6 +237,12 @@ def custom_compute_metrics(p, eval_dataset):
         [label_list[l] for (p, l) in zip(prediction, label) if l != -100]
         for prediction, label in zip(predictions, labels)
     ]
+    '''print("true")
+    print(true_labels)
+    print("------")
+    print("pred")
+    print(true_predictions)
+    print("------")'''
     true_predictions = np.array(
         [item for sublist in true_predictions for item in sublist]
     )

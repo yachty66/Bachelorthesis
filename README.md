@@ -41,6 +41,7 @@ Supervised Named Entity Recognition
     - [ ] remove in dataset each row where duplicates side by side 
     - [ ] aggregate numbers and drop O function  
     - [ ] make a test run with old and new format and check if metric values are the same 
+- [ ] drop each row in dataset where ";" appears because than i can make sure that my method works.
 - [ ] test if i can load the model 
 - [ ] next steps 
 

@@ -1,25 +1,68 @@
-from datasets import load_dataset, load_metric
-from datasets import DatasetDict, Dataset
-import pandas as pd
-#load dataset  
-#check for how many rows its true that two numbers are side by side and the same number
+'''i have two lists 
 
-jnlpba = load_dataset("jnlpba", split=["train[:1000]", "validation[:1000]"])
-jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
-counter = 0
- 
- 
-df = pd.DataFrame(jnlpba["train"])
-for i in range (len(df)):
-    for j in range(len(df["ner_tags"][i]) - 1):
-        if df["ner_tags"][i][j] != 0 and df["ner_tags"][i][j] == df["ner_tags"][i][j + 1]:
-            counter += 1
-            break 
-            #print(jnlpba["train"]["ner_tags"][i])
-            #print("True")
+l1 = [0,0,4,4,0,4,4]
+
+l2 = [0,0,4,0,0,4,4]
+
+write the following python script:
+
+- iter over l1
+- create a empty list "l_index"  and "l_items" and "result"
+- check if item is != 0 if yes save index in l_index and go to next element. if elem same as before add element and index of it to respective lists. repeat as long its the case 
+- once previous is not the case compare the numbers from the first number in l_index to the last number in l_index from l2 with the numbers in l_items. if they are the same add the value of the number else 0
+- repeat as long as the list goes 
+
+In the end the result should be 
+
+result = [0, 4]
+'''
+l1 = [0,0,4,4,0,4,4,0]
+
+l2 = [0,0,4,4,0,4,4,0]
+
+'''def process(l1, l2):
+    l_index =[]
+    l_items = []
+    result = [] 
+    for i, elem in enumerate(l1):
+        if elem != 0 and l_items == [] or elem != 0 and elem == l_items[-1]:
+            l_index.append(i)
+            l_items.append(elem)
+        else:
+            if elem == 0 and l_index == []:
+                pass
+            elif l2[l_index[0]:l_index[-1]+1] == l_items:
+                #sollte 
+                #print(l_items)
+                result.append(l_items[0])
+            else:
+                result.append(0)
+            l_index = []
+            l_items = []
+    if l_index != []:
+        if l2[l_index[0]:l_index[-1]+1] == l_items:
+            result.append(elem)
+        else:
+            result.append(0)
+    return result
+            
+print(process(l1, l2))'''
+
+def process(l1, l2):
+    #drop all items where 
+    l_index =[]
+    l_items = []
+    new_true = [] 
+    new_pred = []
+    for i, elem in enumerate(l1):
     
+#process(l1, l2)
+
+
+
     
+        
+            
 
-
-
-print(counter)
+            
+    

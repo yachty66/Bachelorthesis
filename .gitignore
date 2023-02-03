@@ -2,3 +2,6 @@ Archive/
 data/
 checkpoint.pth.ckpt
 images/
+bert-base-cased-ner-jnlpba-weak-labelled/
+wandb/
+lightning_logs/
