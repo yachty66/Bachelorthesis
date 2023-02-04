@@ -1,19 +1,20 @@
 from pympler import asizeof
+import pandas as pd
 from datasets import load_dataset, load_metric
 from datasets import DatasetDict
 
-jnlpba = load_dataset("jnlpba", split=["train", "validation"])
+jnlpba = load_dataset("jnlpba", split=["train[:100]", "validation[:100]"])
 jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
 
 
+df = pd.DataFrame(jnlpba["validation"])
+#df = df[~df["tokens"].str.contains(";")]
+#df = df[df['tokens'].apply(lambda x: ";" not in x)]
+df_filtered = df[df['tokens'].apply(lambda x: ";" in x)]
 
-counter = 0
-#if a element in "tokens" list contains ";" print line
-for i in range(0, len(jnlpba["train"])):
-    for j in range(0, len(jnlpba["train"][i]["tokens"])):
-        if ";" in jnlpba["train"][i]["tokens"][j]:
-            #print(jnlpba["validation"][i])
-            counter = counter + 1
-            break
-        
-print(counter)
+
+#get the first element of df_filtered
+print(df_filtered.iloc[0]["tokens"])
+
+#print the element which contains ";" inside od df_filtered.iloc[0]["tokens"]
+print(df_filtered.iloc[0]["tokens"][df_filtered.iloc[0]["tokens"].index(";")])

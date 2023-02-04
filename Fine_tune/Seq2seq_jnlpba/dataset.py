@@ -1,5 +1,3 @@
-
-
 from transformers import (
     AdamW,
     MT5ForConditionalGeneration,
@@ -30,6 +28,7 @@ import random
 import pandas as pd
 import nltk
 
+
 class JnlpbDataset(Dataset):
     def __init__(self, tokenizer, dataset, type_path, portion, max_len=512):
         self.dataset = dataset[type_path]
@@ -40,7 +39,8 @@ class JnlpbDataset(Dataset):
         self.tokenizer.model_max_length = max_len
         self.inputs = []
         self.targets = []
-        #self.tokens = []
+        # self.tokens = []
+        self.remove()
         self.merge()
         self.convert()
         self.apply()
@@ -52,8 +52,8 @@ class JnlpbDataset(Dataset):
     def __getitem__(self, index):
         source_ids = self.inputs[index]["input_ids"].squeeze()
         target_ids = self.targets[index]["input_ids"].squeeze()
-        #tokens = self.tokens[index]["tokens"].squeeze()
-        
+        # tokens = self.tokens[index]["tokens"].squeeze()
+
         src_mask = self.inputs[index][
             "attention_mask"
         ].squeeze()  # might need to squeeze
@@ -61,7 +61,7 @@ class JnlpbDataset(Dataset):
             "attention_mask"
         ].squeeze()  # might need to squeeze
         tokens = self.dataset["tokens"]
-        
+
         return {
             "source_ids": source_ids,
             "source_mask": src_mask,
@@ -69,6 +69,11 @@ class JnlpbDataset(Dataset):
             "target_mask": target_mask,
             "tokens": tokens,
         }
+
+    def remove(self):
+        df = pd.DataFrame(self.dataset)
+        df = df[df["tokens"].apply(lambda x: ";" not in x)]
+        self.dataset = df
 
     def map_tags(self, row):
         mapping = {
@@ -142,21 +147,21 @@ class JnlpbDataset(Dataset):
 
     def _build(self):
         for idx in range(len(self.dataset)):
-            #print(self.dataset)
-            #print(30*".")
-            #print(self.dataset[idx]["tokens"])
+            # print(self.dataset)
+            # print(30*".")
+            # print(self.dataset[idx]["tokens"])
             input_, target = " ".join(self.dataset[idx]["tokens"]), "; ".join(
                 self.dataset[idx]["spans"]
             )
-            #tokens = self.dataset[idx]["tokens"] + ["</s>"]
+            # tokens = self.dataset[idx]["tokens"] + ["</s>"]
             input_ = input_.lower() + " </s>"
             target = target.lower() + " </s>"
-            #print(input_)
-            #print(30*"-")
-            #print(target)
-            #print(30*"-")
-            #print(tokens)
-            #what are inputs and targets? 
+            # print(input_)
+            # print(30*"-")
+            # print(target)
+            # print(30*"-")
+            # print(tokens)
+            # what are inputs and targets?
             tokenized_inputs = self.tokenizer.batch_encode_plus(
                 [input_],
                 max_length=self.max_len,
@@ -171,16 +176,16 @@ class JnlpbDataset(Dataset):
                 truncation=True,
                 return_tensors="pt",
             )
-            '''tokenized_tokens = self.tokenizer.batch_encode_plus(
+            """tokenized_tokens = self.tokenizer.batch_encode_plus(
                 tokens,
                 max_length=self.max_len,
                 padding="max_length",
                 truncation=True,
                 return_tensors="pt",
-            )  '''     
+            )  """
             self.inputs.append(tokenized_inputs)
             self.targets.append(tokenized_targets)
-            #self.tokens.append(tokenized_tokens)
+            # self.tokens.append(tokenized_tokens)
 
     def missing(self, row):
         lst = row["ner_tags"]

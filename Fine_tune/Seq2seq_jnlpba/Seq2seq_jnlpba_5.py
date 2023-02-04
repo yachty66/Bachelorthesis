@@ -449,7 +449,7 @@ if __name__ == "__main__":
 
     train_params = dict(
         accumulate_grad_batches=args.gradient_accumulation_steps,
-        # accelerator='gpu',
+        accelerator='cpu',
         # gpus=args.n_gpu,
         max_epochs=args.num_train_epochs,
         precision=32,
@@ -460,7 +460,7 @@ if __name__ == "__main__":
     def get_dataset(tokenizer, type_path, args):
         tokenizer.max_length = args.max_seq_length
         tokenizer.model_max_length = args.max_seq_length
-        jnlpba = load_dataset("jnlpba", split=["train", "validation"])
+        jnlpba = load_dataset("jnlpba", split=["train[:100]", "validation[:100]"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
         return JnlpbDataset(
