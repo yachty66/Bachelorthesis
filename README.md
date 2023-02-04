@@ -37,8 +37,7 @@ Supervised Named Entity Recognition
 - [x] create correct eva format for evaluation in seq2seq
     - [x] test if it works with small sample
 - [ ] make it possible to load total model and start a training with it
-
-- [ ] drop each row in dataset where ";" appears because than i can make sure that my method works.
+- [ ] drop each row in dataset where ";" appears because than i can make sure that my method works. -->
 - [ ] test if i can load the model 
 - [ ] next steps 
 

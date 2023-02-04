@@ -7,6 +7,7 @@ if __name__ == "__main__":
         AutoTokenizer,
         get_linear_schedule_with_warmup,
     )
+    
     from datasets import load_dataset, load_metric
     from datasets import DatasetDict
     import pytorch_lightning as pl
@@ -352,6 +353,7 @@ if __name__ == "__main__":
             train_dataset = get_dataset(
                 tokenizer=self.tokenizer, type_path="train", args=self.hparam
             )
+            print(len(train_dataset))
             dataloader = DataLoader(
                 train_dataset,
                 batch_size=self.hparam.train_batch_size,
@@ -458,7 +460,7 @@ if __name__ == "__main__":
     def get_dataset(tokenizer, type_path, args):
         tokenizer.max_length = args.max_seq_length
         tokenizer.model_max_length = args.max_seq_length
-        jnlpba = load_dataset("jnlpba", split=["train[:100]", "validation[:100]"])
+        jnlpba = load_dataset("jnlpba", split=["train", "validation"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
         return JnlpbDataset(

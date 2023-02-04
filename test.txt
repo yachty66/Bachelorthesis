@@ -1,56 +1,174 @@
-protein: bcl-3
- protein: granulocyte-macrophage colony-stimulating factor
- protein: erythropoietin
- cell_type: proliferating human erythroid precursors
-protein: bcl-3
- dna: proto-oncogene
- dna: t ( 14 
- 19 )
-protein: bcl-3
- protein: granulocyte-macrophage colony-stimulating factor
- protein: erythropoietin
- cell_type: proliferating human erythroid precursors
-protein: bcl-3
- dna: proto-oncogene
- dna: t ( 14 
- 19 )
-protein: bcl-3
- protein: granulocyte-macrophage colony-stimulating factor
- protein: erythropoietin
- cell_type: proliferating human erythroid precursors
-protein: bcl-3
- dna: proto-oncogene
- dna: t ( 14 
- 19 )
-protein: bcl-3
- protein: granulocyte-macrophage colony-stimulating factor
- protein: erythropoietin
- cell_type: proliferating human erythroid precursors
-protein: bcl-3
- dna: proto-oncogene
- dna: t ( 14 
- 19 )
-protein: bcl-3
- protein: granulocyte-macrophage colony-stimulating factor
- protein: erythropoietin
- cell_type: proliferating human erythroid precursors
-protein: bcl-3
- dna: proto-oncogene
- dna: t ( 14 
- 19 )
-protein: bcl-3
- protein: granulocyte-macrophage colony-stimulating factor
- protein: erythropoietin
- cell_type: proliferating human erythroid precursors
-protein: bcl-3
- dna: proto-oncogene
- dna: t ( 14 
- 19 )
-protein: bcl-3
- protein: granulocyte-macrophage colony-stimulating factor
- protein: erythropoietin
- cell_type: proliferating human erythroid precursors
-protein: bcl-3
- dna: proto-oncogene
- dna: t ( 14 
- 19 )
+---------------------------------------------------------------------------
+OSError                                   Traceback (most recent call last)
+/tmp/ipykernel_20947/2981585113.py in <module>
+----> 1 trainer.fit(model)
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py in fit(self, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path)
+    607         self.strategy._lightning_module = model
+    608         call._call_and_handle_interrupt(
+--> 609             self, self._fit_impl, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path
+    610         )
+    611 
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/trainer/call.py in _call_and_handle_interrupt(trainer, trainer_fn, *args, **kwargs)
+     36             return trainer.strategy.launcher.launch(trainer_fn, *args, trainer=trainer, **kwargs)
+     37         else:
+---> 38             return trainer_fn(*args, **kwargs)
+     39 
+     40     except _TunerExitException:
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py in _fit_impl(self, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path)
+    648             model_connected=self.lightning_module is not None,
+    649         )
+--> 650         self._run(model, ckpt_path=self.ckpt_path)
+    651 
+    652         assert self.state.stopped
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py in _run(self, model, ckpt_path)
+   1101         self._checkpoint_connector.resume_end()
+   1102 
+-> 1103         results = self._run_stage()
+   1104 
+   1105         log.detail(f"{self.__class__.__name__}: trainer tearing down")
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py in _run_stage(self)
+   1180         if self.predicting:
+   1181             return self._run_predict()
+-> 1182         self._run_train()
+   1183 
+   1184     def _pre_training_routine(self) -> None:
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py in _run_train(self)
+   1203 
+   1204         with torch.autograd.set_detect_anomaly(self._detect_anomaly):
+-> 1205             self.fit_loop.run()
+   1206 
+   1207     def _run_evaluate(self) -> _EVALUATE_OUTPUT:
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/loops/loop.py in run(self, *args, **kwargs)
+    197             try:
+    198                 self.on_advance_start(*args, **kwargs)
+--> 199                 self.advance(*args, **kwargs)
+    200                 self.on_advance_end()
+    201                 self._restarting = False
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/loops/fit_loop.py in advance(self)
+    265         self._data_fetcher.setup(dataloader, batch_to_device=batch_to_device)
+    266         with self.trainer.profiler.profile("run_training_epoch"):
+--> 267             self._outputs = self.epoch_loop.run(self._data_fetcher)
+    268 
+    269     def on_advance_end(self) -> None:
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/loops/loop.py in run(self, *args, **kwargs)
+    192         self.reset()
+    193 
+--> 194         self.on_run_start(*args, **kwargs)
+    195 
+    196         while not self.done:
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/loops/epoch/training_epoch_loop.py in on_run_start(self, data_fetcher)
+    158     def on_run_start(self, data_fetcher: AbstractDataFetcher) -> None:
+    159         self._reload_dataloader_state_dict(data_fetcher)
+--> 160         _ = iter(data_fetcher)  # creates the iterator inside the fetcher
+    161         # add the previous `fetched` value to properly track `is_last_batch` with no prefetching
+    162         data_fetcher.fetched += self.batch_progress.current.ready
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/utilities/fetching.py in __iter__(self)
+    177         self.reset()
+    178         self.dataloader_iter = iter(self.dataloader)
+--> 179         self._apply_patch()
+    180         self.prefetching()
+    181         return self
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/utilities/fetching.py in _apply_patch(self)
+    118                 patch_dataloader_iterator(loader, iterator, self)
+    119 
+--> 120         apply_to_collections(self.loaders, self.loader_iters, (Iterator, DataLoader), _apply_patch_fn)
+    121 
+    122     def _store_dataloader_iter_state(
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/utilities/fetching.py in loader_iters(self)
+    154             raise MisconfigurationException("The `dataloader_iter` isn't available outside the __iter__ context.")
+    155         if isinstance(self.dataloader, CombinedLoader):
+--> 156             return self.dataloader_iter.loader_iters
+    157         return self.dataloader_iter
+    158 
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/trainer/supporters.py in loader_iters(self)
+    554         """Get the `_loader_iters` and create one if it is None."""
+    555         if self._loader_iters is None:
+--> 556             self._loader_iters = self.create_loader_iters(self.loaders)
+    557 
+    558         return self._loader_iters
+
+/opt/conda/lib/python3.7/site-packages/pytorch_lightning/trainer/supporters.py in create_loader_iters(loaders)
+    594         """
+    595         # dataloaders are Iterable but not Sequences. Need this to specifically exclude sequences
+--> 596         return apply_to_collection(loaders, Iterable, iter, wrong_dtype=(Sequence, Mapping))
+    597 
+    598 
+
+/opt/conda/lib/python3.7/site-packages/lightning_utilities/core/apply_func.py in apply_to_collection(data, dtype, function, wrong_dtype, include_none, *args, **kwargs)
+     45     # Breaking condition
+     46     if isinstance(data, dtype) and (wrong_dtype is None or not isinstance(data, wrong_dtype)):
+---> 47         return function(data, *args, **kwargs)
+     48 
+     49     elem_type = type(data)
+
+/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py in __iter__(self)
+    442             return self._iterator
+    443         else:
+--> 444             return self._get_iterator()
+    445 
+    446     @property
+
+/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _get_iterator(self)
+    388         else:
+    389             self.check_worker_number_rationality()
+--> 390             return _MultiProcessingDataLoaderIter(self)
+    391 
+    392     @property
+
+/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py in __init__(self, loader)
+   1075             #     before it starts, and __del__ tries to join but will get:
+   1076             #     AssertionError: can only join a started process.
+-> 1077             w.start()
+   1078             self._index_queues.append(index_queue)
+   1079             self._workers.append(w)
+
+/opt/conda/lib/python3.7/multiprocessing/process.py in start(self)
+    110                'daemonic processes are not allowed to have children'
+    111         _cleanup()
+--> 112         self._popen = self._Popen(self)
+    113         self._sentinel = self._popen.sentinel
+    114         # Avoid a refcycle if the target function holds an indirect
+
+/opt/conda/lib/python3.7/multiprocessing/context.py in _Popen(process_obj)
+    221     @staticmethod
+    222     def _Popen(process_obj):
+--> 223         return _default_context.get_context().Process._Popen(process_obj)
+    224 
+    225 class DefaultContext(BaseContext):
+
+/opt/conda/lib/python3.7/multiprocessing/context.py in _Popen(process_obj)
+    275         def _Popen(process_obj):
+    276             from .popen_fork import Popen
+--> 277             return Popen(process_obj)
+    278 
+    279     class SpawnProcess(process.BaseProcess):
+
+/opt/conda/lib/python3.7/multiprocessing/popen_fork.py in __init__(self, process_obj)
+     18         self.returncode = None
+     19         self.finalizer = None
+---> 20         self._launch(process_obj)
+     21 
+     22     def duplicate_for_child(self, fd):
+
+/opt/conda/lib/python3.7/multiprocessing/popen_fork.py in _launch(self, process_obj)
+     68         code = 1
+     69         parent_r, child_w = os.pipe()
+---> 70         self.pid = os.fork()
+     71         if self.pid == 0:
+     72             try:
+
+OSError: [Errno 12] Cannot allocate memory

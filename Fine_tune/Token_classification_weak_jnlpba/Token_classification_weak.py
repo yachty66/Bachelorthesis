@@ -31,11 +31,11 @@ class JnlpbDataset:
     def __init__(self, dataset, portion, type_path):
         self.dataset = dataset[type_path]
         self.portion = portion
-        self.remove()
+        #self.remove()
         self.merge()
         self.apply()
         
-    def remove_rows(self, row):
+    '''def remove_rows(self, row):
         ner_tags = row["ner_tags"]
         for i in range(len(ner_tags) - 1):
             if ner_tags[i] != 0 and ner_tags[i] == ner_tags[i + 1]:
@@ -45,7 +45,7 @@ class JnlpbDataset:
     def remove(self):
         df = pd.DataFrame(self.dataset)
         df = df[df.apply(self.remove_rows, axis=1)]
-        self.dataset = Dataset.from_pandas(df)
+        self.dataset = Dataset.from_pandas(df)'''
 
     def map_tags(self, row):
         mapping = {

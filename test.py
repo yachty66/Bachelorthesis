@@ -1,45 +1,19 @@
-'''i have two lists 
+from pympler import asizeof
+from datasets import load_dataset, load_metric
+from datasets import DatasetDict
 
-l1 = [0,0,4,4,0,4,4]
-
-l2 = [0,0,4,0,0,4,4]
-
-write the following python script:
-
-- iter over l1
-- create a empty list "l_index"  and "l_items" and "result"
-- check if item is != 0 if yes save index in l_index and go to next element. if elem same as before add element and index of it to respective lists. repeat as long its the case 
-- once previous is not the case compare the numbers from the first number in l_index to the last number in l_index from l2 with the numbers in l_items. if they are the same add the value of the number else 0
-- repeat as long as the list goes 
-
-In the end the result should be 
-
-result = [0, 4]
-'''
-l1 = [0,0,4,4,0,4,4,4]
-
-l2 = [4,0,4,4,0,4,4,0]
-
-def val_preprocessing(true, pred):
-    new_true = []
-    new_pred = []
-    #if value in true and pred both = 0 remove do noting else add respective values to their respective lists
-    for i in range(len(true)):
-        if true[i] == 0 and pred[i] == 0:
-            continue
-        else:
-            new_true.append(true[i])
-            new_pred.append(pred[i])
-    return new_true, new_pred
-
-print(val_preprocessing(l1, l2))
-            
+jnlpba = load_dataset("jnlpba", split=["train", "validation"])
+jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
 
 
 
-    
+counter = 0
+#if a element in "tokens" list contains ";" print line
+for i in range(0, len(jnlpba["train"])):
+    for j in range(0, len(jnlpba["train"][i]["tokens"])):
+        if ";" in jnlpba["train"][i]["tokens"][j]:
+            #print(jnlpba["validation"][i])
+            counter = counter + 1
+            break
         
-            
-
-            
-    
+print(counter)
