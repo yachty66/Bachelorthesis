@@ -240,12 +240,12 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["source_ids"]
             ]
-            print("dec")
+            '''print("dec")
             print(dec)
             print(30*"-")
             print("target")
             print(target)
-            print(30*"-")
+            print(30*"-")'''
             true_label = self.label_true(target, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
             predicted_label = self.label_pred(dec, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
             self.counter += self.hparam.eval_batch_size 
@@ -259,6 +259,8 @@ if __name__ == "__main__":
 
         def validation_epoch_end(self, outputs):
             self.counter = 0
+            #print("--"*30)
+            #print(len(self.true))
             true_label = np.concatenate(self.true)
             predicted_label = np.concatenate(self.pred)
             true_label, predicted_label = self.val_preprocessing(true_label, predicted_label)
@@ -353,7 +355,6 @@ if __name__ == "__main__":
             train_dataset = get_dataset(
                 tokenizer=self.tokenizer, type_path="train", args=self.hparam
             )
-            print(len(train_dataset))
             dataloader = DataLoader(
                 train_dataset,
                 batch_size=self.hparam.train_batch_size,
@@ -460,12 +461,15 @@ if __name__ == "__main__":
     def get_dataset(tokenizer, type_path, args):
         tokenizer.max_length = args.max_seq_length
         tokenizer.model_max_length = args.max_seq_length
-        jnlpba = load_dataset("jnlpba", split=["train[:100]", "validation[:100]"])
+        jnlpba = load_dataset("jnlpba", split=["train", "validation"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
         return JnlpbDataset(
             tokenizer=tokenizer, dataset=dataset, type_path=type_path, portion=0
         )
+
+    #call get dataset to get the dataset
+
 
     trainer = pl.Trainer(**train_params)
 

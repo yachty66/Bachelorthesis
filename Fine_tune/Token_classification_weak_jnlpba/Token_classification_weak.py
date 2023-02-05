@@ -24,28 +24,21 @@ task = "ner"
 model_checkpoint = "bert-base-cased"
 batch_size = 8
 
-jnlpba = load_dataset("jnlpba", split=["train[:100]", "validation[:100]"])
+jnlpba = load_dataset("jnlpba", split=["train", "validation"])
 jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
 
 class JnlpbDataset:
     def __init__(self, dataset, portion, type_path):
         self.dataset = dataset[type_path]
         self.portion = portion
-        #self.remove()
+        self.remove()
         self.merge()
         self.apply()
         
-    '''def remove_rows(self, row):
-        ner_tags = row["ner_tags"]
-        for i in range(len(ner_tags) - 1):
-            if ner_tags[i] != 0 and ner_tags[i] == ner_tags[i + 1]:
-                return False
-        return True
-                
     def remove(self):
         df = pd.DataFrame(self.dataset)
-        df = df[df.apply(self.remove_rows, axis=1)]
-        self.dataset = Dataset.from_pandas(df)'''
+        df = df[df["tokens"].apply(lambda x: ";" not in x)]
+        self.dataset = df
 
     def map_tags(self, row):
         mapping = {
@@ -163,6 +156,8 @@ input_dataset_validation = JnlpbDataset(
 )
 dataset_validation = input_dataset_validation.get_dataset()
 datasets = DatasetDict({"train": dataset_train, "validation": dataset_validation})
+#print  first row of the training dataset
+print(datasets["train"][0])
 df = dataset_train.to_pandas()
 label_list = list(set([tag for row in df["ner_tags"] for tag in row]))
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
@@ -191,7 +186,6 @@ def tokenize_and_align_labels(examples):
         labels.append(label_ids)
     tokenized_inputs["labels"] = labels
     tokenized_inputs["ner_tags"] = examples["ner_tags"]
-    print(tokenized_inputs["labels"][0])
     return tokenized_inputs
 
 
@@ -236,7 +230,11 @@ def custom_compute_metrics(p, eval_dataset):
     print("------")
     print("pred")
     print(true_predictions)
-    print("------")'''
+    print("------")
+    print(30*"----")
+    print("JOOOOO:")
+    print(len(true_labels))
+    print(30*"----")'''
     true_predictions = np.array(
         [item for sublist in true_predictions for item in sublist]
     )
