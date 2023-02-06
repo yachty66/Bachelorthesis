@@ -240,12 +240,6 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["source_ids"]
             ]
-            '''print("dec")
-            print(dec)
-            print(30*"-")
-            print("target")
-            print(target)
-            print(30*"-")'''
             true_label = self.label_true(target, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
             predicted_label = self.label_pred(dec, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
             self.counter += self.hparam.eval_batch_size 
@@ -255,9 +249,14 @@ if __name__ == "__main__":
             self.pred.extend(np.array(pred_mapped).flatten())
             val_loss = self._step(batch)
             self.log("val_loss", val_loss)
-            return {"val_loss": val_loss}            
+            return true_mapped, pred_mapped
 
         def validation_epoch_end(self, outputs):
+            print("-"*30)
+            print(outputs[0][0])q
+            print(len(outputs[0][0]))
+            print(len(outputs[0]))
+            #all_preds = torch.stack(outputs)
             self.counter = 0
             #print("--"*30)
             #print(len(self.true))
@@ -299,6 +298,8 @@ if __name__ == "__main__":
                 true_label, predicted_label, zero_division=1, average="weighted"
             )
             wandb.log({'precision': precision, 'recall': recall, 'f1': fscore, 'accuracy': accuracy})
+            self.true = []
+            self.pred = []
 
         def configure_optimizers(self):
             model = self.model
@@ -426,7 +427,7 @@ if __name__ == "__main__":
         warmup_steps=0,
         train_batch_size=8,  # 4/2/1 if t5-small not working
         eval_batch_size=8,
-        num_train_epochs=3,
+        num_train_epochs=1,
         gradient_accumulation_steps=16,
         # n_gpu=1,
         early_stop_callback=False,
@@ -461,7 +462,7 @@ if __name__ == "__main__":
     def get_dataset(tokenizer, type_path, args):
         tokenizer.max_length = args.max_seq_length
         tokenizer.model_max_length = args.max_seq_length
-        jnlpba = load_dataset("jnlpba", split=["train", "validation"])
+        jnlpba = load_dataset("jnlpba", split=["train[:50]", "validation[:50]"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
         return JnlpbDataset(

@@ -20,12 +20,13 @@ wandb.init(
 )
 random.seed(42)
 
-task = "ner" 
+task = "ner"
 model_checkpoint = "bert-base-cased"
 batch_size = 8
 
-jnlpba = load_dataset("jnlpba", split=["train", "validation"])
+jnlpba = load_dataset("jnlpba", split=["train[:50]", "validation[:50]"])
 jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
+
 
 class JnlpbDataset:
     def __init__(self, dataset, portion, type_path):
@@ -34,7 +35,7 @@ class JnlpbDataset:
         self.remove()
         self.merge()
         self.apply()
-        
+
     def remove(self):
         df = pd.DataFrame(self.dataset)
         df = df[df["tokens"].apply(lambda x: ";" not in x)]
@@ -156,8 +157,6 @@ input_dataset_validation = JnlpbDataset(
 )
 dataset_validation = input_dataset_validation.get_dataset()
 datasets = DatasetDict({"train": dataset_train, "validation": dataset_validation})
-#print  first row of the training dataset
-print(datasets["train"][0])
 df = dataset_train.to_pandas()
 label_list = list(set([tag for row in df["ner_tags"] for tag in row]))
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
@@ -194,6 +193,9 @@ model = AutoModelForTokenClassification.from_pretrained(
     model_checkpoint, num_labels=len(label_list)
 )
 
+# which optimizer to use?
+# the default one is AdamW
+
 model_name = model_checkpoint.split("/")[-1]
 args = TrainingArguments(
     f"{model_name}-{task}-jnlpba-weak-labelled",
@@ -210,12 +212,22 @@ args = TrainingArguments(
 data_collator = DataCollatorForTokenClassification(tokenizer)
 
 
+def val_preprocessing(true, pred):
+    new_true = []
+    new_pred = []
+    for i in range(len(true)):
+        if true[i] == 0 and pred[i] == 0:
+            continue
+        else:
+            new_true.append(true[i])
+            new_pred.append(pred[i])
+    return new_true, new_pred
+
+
 def custom_compute_metrics(p, eval_dataset):
     predictions, labels = p
-    original_predictions = []
-    for i, label in enumerate(labels):
-        corresponding_text = eval_dataset[i]["tokens"]
-        original_predictions.append(corresponding_text)
+    # still need to add the method where all the zeroes are getting removed
+
     predictions = np.argmax(predictions, axis=2)
     true_predictions = [
         [label_list[p] for (p, l) in zip(prediction, label) if l != -100]
@@ -225,7 +237,22 @@ def custom_compute_metrics(p, eval_dataset):
         [label_list[l] for (p, l) in zip(prediction, label) if l != -100]
         for prediction, label in zip(predictions, labels)
     ]
-    '''print("true")
+    # create two new lists - iter - add each result to the list
+    true_predictions_new, true_labels_new = [], []
+    for i in range(len(true_predictions)):
+        new_pred, new_true = val_preprocessing(true_predictions[i], true_labels[i])
+        true_predictions_new.append(new_pred)
+        true_labels_new.append(new_true)
+
+    for i in range(len(true_predictions)):
+        for j in range(len(true_predictions[i])):
+            if true_predictions[i][j] == 0 and true_labels[i][j] == 0:
+                continue
+            else:
+                true_predictions_new.append(true_predictions[i])
+                true_labels_new.append(true_labels[i])
+    print(true_labels)
+    """print("true")
     print(true_labels)
     print("------")
     print("pred")
@@ -234,7 +261,7 @@ def custom_compute_metrics(p, eval_dataset):
     print(30*"----")
     print("JOOOOO:")
     print(len(true_labels))
-    print(30*"----")'''
+    print(30*"----")"""
     true_predictions = np.array(
         [item for sublist in true_predictions for item in sublist]
     )
@@ -267,6 +294,7 @@ def custom_compute_metrics(p, eval_dataset):
         "accuracy": accuracy,
         "support": support,
     }
+
 
 trainer = Trainer(
     model,
