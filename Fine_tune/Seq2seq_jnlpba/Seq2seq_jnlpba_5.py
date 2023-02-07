@@ -71,6 +71,7 @@ if __name__ == "__main__":
             self.save_hyperparameters()
             self.true = []
             self.pred = []
+            self.batch_counter = 0
             #self.counter = 0
 
         def is_logger(self):
@@ -241,14 +242,17 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["source_ids"]
             ]
+            len_source_ids = len(batch["source_ids"])
+            
             true_label = self.label_true(
                 target,
-                batch["tokens"]
+                batch["tokens"][self.batch_counter: self.batch_counter + len_source_ids]
             )
             predicted_label = self.label_pred(
                 dec,
-                batch["tokens"]
+                batch["tokens"][self.batch_counter: self.batch_counter + len_source_ids]
             )
+            self.batch_counter += len_source_ids
             #self.counter += self.hparam.eval_batch_size
             pred_mapped = self.map_tags(predicted_label)
             true_mapped = self.map_tags(true_label)
