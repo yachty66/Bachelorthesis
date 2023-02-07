@@ -71,7 +71,7 @@ if __name__ == "__main__":
             self.save_hyperparameters()
             self.true = []
             self.pred = []
-            self.counter = 0
+            #self.counter = 0
 
         def is_logger(self):
             return True
@@ -174,7 +174,6 @@ if __name__ == "__main__":
         def _step(self, batch):
             lm_labels = batch["target_ids"]
             lm_labels[lm_labels[:, :] == self.tokenizer.pad_token_id] = -100
-
             outputs = self(
                 input_ids=batch["source_ids"],
                 attention_mask=batch["source_mask"],
@@ -244,25 +243,19 @@ if __name__ == "__main__":
             ]
             true_label = self.label_true(
                 target,
-                batch["tokens"][
-                    self.counter : (self.hparam.eval_batch_size + self.counter)
-                ],
+                batch["tokens"]
             )
             predicted_label = self.label_pred(
                 dec,
-                batch["tokens"][
-                    self.counter : (self.hparam.eval_batch_size + self.counter)
-                ],
+                batch["tokens"]
             )
-            self.counter += self.hparam.eval_batch_size
+            #self.counter += self.hparam.eval_batch_size
             pred_mapped = self.map_tags(predicted_label)
             true_mapped = self.map_tags(true_label)
             self.true.extend(np.array(true_mapped).flatten())
             self.pred.extend(np.array(pred_mapped).flatten())
             val_loss = self._step(batch)
             self.log("val_loss", val_loss) 
-            
-            
             ##################################################################
             print("true_label")
             print(true_label)
@@ -309,13 +302,7 @@ if __name__ == "__main__":
                     "f1": fscore,
                     "accuracy": accuracy,
                 }
-            )
-            
-            
-            
-            
-            
-                       
+            )           
             return true_mapped, pred_mapped
 
         def validation_epoch_end(self, outputs):
