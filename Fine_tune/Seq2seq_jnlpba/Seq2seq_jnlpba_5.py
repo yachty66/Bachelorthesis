@@ -42,7 +42,7 @@ if __name__ == "__main__":
     wandb.init(
         project="Bachelor_Thesis",
         entity="maxhager28",
-        name="Seq2seq_jnlpba_strong_test_100",
+        name="Seq2seq_jnlpba_strong_test_test",
     )
 
     def set_seed(seed):
@@ -187,6 +187,7 @@ if __name__ == "__main__":
         def training_step(self, batch, batch_idx):
             loss = self._step(batch)
             self.log("loss", loss)
+            wandb.log({"train_loss_step": loss})
             return {"loss": loss}
 
         def training_epoch_end(self, outputs):
@@ -218,7 +219,6 @@ if __name__ == "__main__":
             return new_true, new_pred
 
         def validation_step(self, batch, batch_idx):
-            print(30*"++")
             input_ids = batch["source_ids"].to("cpu")
             attention_mask = batch["source_mask"].to("cpu")
             outs = model.model.generate(
@@ -260,16 +260,65 @@ if __name__ == "__main__":
             self.true.extend(np.array(true_mapped).flatten())
             self.pred.extend(np.array(pred_mapped).flatten())
             val_loss = self._step(batch)
-            self.log("val_loss", val_loss)
+            self.log("val_loss", val_loss) 
+            
+            
+            ##################################################################
+            print("true_label")
+            print(true_label)
+            print("predicted_label")
+            print(predicted_label)
+            if true_label == [] and predicted_label == []:
+                return
+            true_label = np.concatenate(true_mapped)
+            predicted_label = np.concatenate(pred_mapped)
+            true_label, predicted_label = self.val_preprocessing(
+                true_label, predicted_label
+            )
+            cm = confusion_matrix(true_label, predicted_label)
+            cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
+            plt.imshow(cm, cmap="Blues")
+            plt.title("Confusion Matrix")
+            plt.xlabel("Predicted")
+            plt.ylabel("True")
+            plt.colorbar()
+            mapping = {
+                "O": 0,
+                "rna": 1,
+                "dna": 2,
+                "cell_line": 3,
+                "cell_type": 4,
+                "protein": 5,
+            }
+            reverse_mapping = {v: k for k, v in mapping.items()}
+            ax = plt.gca()
+            ax.set_xticks([i for i in range(len(mapping))])
+            ax.set_yticks([i for i in range(len(mapping))])
+            ax.set_xticklabels([reverse_mapping[i] for i in range(len(mapping))])
+            ax.set_yticklabels([reverse_mapping[i] for i in range(len(mapping))])
+            wandb.log({"confusion_matrix": wandb.Image(plt)})
+            plt.clf()
+            accuracy = accuracy_score(true_label, predicted_label)
+            precision, recall, fscore, support = precision_recall_fscore_support(
+                true_label, predicted_label, zero_division=1, average="weighted"
+            )
+            wandb.log(
+                {
+                    "precision": precision,
+                    "recall": recall,
+                    "f1": fscore,
+                    "accuracy": accuracy,
+                }
+            )
             
             
             
-            #########################
-            
-            print(30*"+")
-            print(np.concatenate(true_mapped))
             
             
+                       
+            return true_mapped, pred_mapped
+
+        def validation_epoch_end(self, outputs):
             true_label = np.concatenate(self.true)
             predicted_label = np.concatenate(self.pred)
             true_label, predicted_label = self.val_preprocessing(
@@ -310,61 +359,7 @@ if __name__ == "__main__":
                     "accuracy": accuracy,
                 }
             )
-            
-            return true_mapped, pred_mapped
 
-        def validation_epoch_end(self, outputs):
-            pass
-            """
-            - [ ] figure out why he is doing on epoch end twice
-            - [ ] figure out how to do evaluation
-
-            the thing is that the only thing which counts is if it works
-            warum komme ich nicht drauf klar was ich machen muss? vllt brauch ich nochmal die rechnung
-            eigentlich
-            """
-            '''true_label = np.concatenate(self.true)
-            predicted_label = np.concatenate(self.pred)
-            true_label, predicted_label = self.val_preprocessing(
-                true_label, predicted_label
-            )
-            cm = confusion_matrix(true_label, predicted_label)
-            cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
-            plt.imshow(cm, cmap="Blues")
-            plt.title("Confusion Matrix")
-            plt.xlabel("Predicted")
-            plt.ylabel("True")
-            plt.colorbar()
-            mapping = {
-                "O": 0,
-                "rna": 1,
-                "dna": 2,
-                "cell_line": 3,
-                "cell_type": 4,
-                "protein": 5,
-            }
-            reverse_mapping = {v: k for k, v in mapping.items()}
-            ax = plt.gca()
-            ax.set_xticks([i for i in range(len(mapping))])
-            ax.set_yticks([i for i in range(len(mapping))])
-            ax.set_xticklabels([reverse_mapping[i] for i in range(len(mapping))])
-            ax.set_yticklabels([reverse_mapping[i] for i in range(len(mapping))])
-            wandb.log({"confusion_matrix": wandb.Image(plt)})
-            plt.clf()
-            accuracy = accuracy_score(true_label, predicted_label)
-            precision, recall, fscore, support = precision_recall_fscore_support(
-                true_label, predicted_label, zero_division=1, average="weighted"
-            )
-            wandb.log(
-                {
-                    "precision": precision,
-                    "recall": recall,
-                    "f1": fscore,
-                    "accuracy": accuracy,
-                }
-            )
-            self.true = []
-            self.pred = []'''
 
         def configure_optimizers(self):
             model = self.model
@@ -495,7 +490,7 @@ if __name__ == "__main__":
         adam_epsilon=1e-8,
         warmup_steps=0,
         train_batch_size=8,  # 4/2/1 if t5-small not working
-        eval_batch_size=4,
+        eval_batch_size=8,
         num_train_epochs=1,
         gradient_accumulation_steps=16,
         # n_gpu=1,
@@ -504,7 +499,7 @@ if __name__ == "__main__":
         opt_level="O1",  # you can find out more on optimisation levels here https://nvidia.github.io/apex/amp.html#opt-levels-and-properties
         max_grad_norm=1,  # if you enable 16-bit training then set this to a sensible value, 0.5 is a good default
         seed=42,
-        val_check_interval=1,
+        val_check_interval=0.33,
     )
 
     tokenizer = AutoTokenizer.from_pretrained("t5-small")
@@ -531,7 +526,7 @@ if __name__ == "__main__":
     def get_dataset(tokenizer, type_path, args):
         tokenizer.max_length = args.max_seq_length
         tokenizer.model_max_length = args.max_seq_length
-        jnlpba = load_dataset("jnlpba", split=["train[:20]", "validation[:20]"])
+        jnlpba = load_dataset("jnlpba", split=["train[:50]", "validation[:50]"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
         return JnlpbDataset(
