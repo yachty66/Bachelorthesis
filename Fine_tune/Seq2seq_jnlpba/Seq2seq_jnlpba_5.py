@@ -7,7 +7,7 @@ if __name__ == "__main__":
         AutoTokenizer,
         get_linear_schedule_with_warmup,
     )
-    
+
     from datasets import load_dataset, load_metric
     from datasets import DatasetDict
     import pytorch_lightning as pl
@@ -36,10 +36,14 @@ if __name__ == "__main__":
     import nltk
     from dataset import JnlpbDataset
 
-    #nltk.download("punkt")
+    # nltk.download("punkt")
     random.seed(42)
 
-    wandb.init(project="Bachelor_Thesis", entity="maxhager28", name="Seq2seq_jnlpba_strong_test_100")
+    wandb.init(
+        project="Bachelor_Thesis",
+        entity="maxhager28",
+        name="Seq2seq_jnlpba_strong_test_100",
+    )
 
     def set_seed(seed):
         random.seed(seed)
@@ -80,7 +84,13 @@ if __name__ == "__main__":
             for x in incoming:
                 result = re.split(";(?![^\(]*\))", x)
                 result = [x.strip() for x in result]
-                l_predictions.append([{e.split(":")[0].strip(): e.split(":")[1].strip()} for e in result if e])
+                l_predictions.append(
+                    [
+                        {e.split(":")[0].strip(): e.split(":")[1].strip()}
+                        for e in result
+                        if e
+                    ]
+                )
             result = []
             for inner_list in l_targets:
                 outcome_inner = []
@@ -161,7 +171,7 @@ if __name__ == "__main__":
                 labels=lm_labels,
             )
 
-        def _step(self, batch):            
+        def _step(self, batch):
             lm_labels = batch["target_ids"]
             lm_labels[lm_labels[:, :] == self.tokenizer.pad_token_id] = -100
 
@@ -206,17 +216,9 @@ if __name__ == "__main__":
                     new_true.append(true[i])
                     new_pred.append(pred[i])
             return new_true, new_pred
-            
+
         def validation_step(self, batch, batch_idx):
-            outputs = []
-            targets = []
-            all_text = []
-            true_labels = []
-            pred_labels = []
-            predictions = []
-            predictions_temp = []
-            l_true_labels = []
-            l_pred_labels = []
+            print(30*"++")
             input_ids = batch["source_ids"].to("cpu")
             attention_mask = batch["source_mask"].to("cpu")
             outs = model.model.generate(
@@ -240,36 +242,39 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["source_ids"]
             ]
-            true_label = self.label_true(target, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
-            predicted_label = self.label_pred(dec, batch["tokens"][self.counter:(self.hparam.eval_batch_size + self.counter)])
-            self.counter += self.hparam.eval_batch_size 
+            true_label = self.label_true(
+                target,
+                batch["tokens"][
+                    self.counter : (self.hparam.eval_batch_size + self.counter)
+                ],
+            )
+            predicted_label = self.label_pred(
+                dec,
+                batch["tokens"][
+                    self.counter : (self.hparam.eval_batch_size + self.counter)
+                ],
+            )
+            self.counter += self.hparam.eval_batch_size
             pred_mapped = self.map_tags(predicted_label)
             true_mapped = self.map_tags(true_label)
             self.true.extend(np.array(true_mapped).flatten())
             self.pred.extend(np.array(pred_mapped).flatten())
             val_loss = self._step(batch)
             self.log("val_loss", val_loss)
-            return true_mapped, pred_mapped
-
-        def validation_epoch_end(self, outputs):
-            print("-"*30)
-            print(outputs[0][0])q
-            print(len(outputs[0][0]))
-            print(len(outputs[0]))
-            #all_preds = torch.stack(outputs)
-            self.counter = 0
-            #print("--"*30)
-            #print(len(self.true))
+            
+            
+            
+            #########################
+            
+            print(30*"+")
+            print(np.concatenate(true_mapped))
+            
+            
             true_label = np.concatenate(self.true)
             predicted_label = np.concatenate(self.pred)
-            true_label, predicted_label = self.val_preprocessing(true_label, predicted_label)
-            #print("true")
-            #print(true_label)
-            #print(30*"-")
-            #print("pred")
-            #print(predicted_label)
-            #print(30*"-")
-
+            true_label, predicted_label = self.val_preprocessing(
+                true_label, predicted_label
+            )
             cm = confusion_matrix(true_label, predicted_label)
             cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
             plt.imshow(cm, cmap="Blues")
@@ -297,9 +302,69 @@ if __name__ == "__main__":
             precision, recall, fscore, support = precision_recall_fscore_support(
                 true_label, predicted_label, zero_division=1, average="weighted"
             )
-            wandb.log({'precision': precision, 'recall': recall, 'f1': fscore, 'accuracy': accuracy})
+            wandb.log(
+                {
+                    "precision": precision,
+                    "recall": recall,
+                    "f1": fscore,
+                    "accuracy": accuracy,
+                }
+            )
+            
+            return true_mapped, pred_mapped
+
+        def validation_epoch_end(self, outputs):
+            pass
+            """
+            - [ ] figure out why he is doing on epoch end twice
+            - [ ] figure out how to do evaluation
+
+            the thing is that the only thing which counts is if it works
+            warum komme ich nicht drauf klar was ich machen muss? vllt brauch ich nochmal die rechnung
+            eigentlich
+            """
+            '''true_label = np.concatenate(self.true)
+            predicted_label = np.concatenate(self.pred)
+            true_label, predicted_label = self.val_preprocessing(
+                true_label, predicted_label
+            )
+            cm = confusion_matrix(true_label, predicted_label)
+            cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
+            plt.imshow(cm, cmap="Blues")
+            plt.title("Confusion Matrix")
+            plt.xlabel("Predicted")
+            plt.ylabel("True")
+            plt.colorbar()
+            mapping = {
+                "O": 0,
+                "rna": 1,
+                "dna": 2,
+                "cell_line": 3,
+                "cell_type": 4,
+                "protein": 5,
+            }
+            reverse_mapping = {v: k for k, v in mapping.items()}
+            ax = plt.gca()
+            ax.set_xticks([i for i in range(len(mapping))])
+            ax.set_yticks([i for i in range(len(mapping))])
+            ax.set_xticklabels([reverse_mapping[i] for i in range(len(mapping))])
+            ax.set_yticklabels([reverse_mapping[i] for i in range(len(mapping))])
+            wandb.log({"confusion_matrix": wandb.Image(plt)})
+            plt.clf()
+            accuracy = accuracy_score(true_label, predicted_label)
+            precision, recall, fscore, support = precision_recall_fscore_support(
+                true_label, predicted_label, zero_division=1, average="weighted"
+            )
+            wandb.log(
+                {
+                    "precision": precision,
+                    "recall": recall,
+                    "f1": fscore,
+                    "accuracy": accuracy,
+                }
+            )
             self.true = []
-            self.pred = []
+            self.pred = []'''
 
         def configure_optimizers(self):
             model = self.model
@@ -383,8 +448,12 @@ if __name__ == "__main__":
             return dataloader
 
         def val_dataloader(self):
-            val_dataset = get_dataset(tokenizer=self.tokenizer, type_path="validation", args=self.hparam)
-            dataloader = DataLoader(val_dataset, batch_size=self.hparam.eval_batch_size, num_workers=2)
+            val_dataset = get_dataset(
+                tokenizer=self.tokenizer, type_path="validation", args=self.hparam
+            )
+            dataloader = DataLoader(
+                val_dataset, batch_size=self.hparam.eval_batch_size, num_workers=2
+            )
             return dataloader
 
     logger = logging.getLogger(__name__)
@@ -426,7 +495,7 @@ if __name__ == "__main__":
         adam_epsilon=1e-8,
         warmup_steps=0,
         train_batch_size=8,  # 4/2/1 if t5-small not working
-        eval_batch_size=8,
+        eval_batch_size=4,
         num_train_epochs=1,
         gradient_accumulation_steps=16,
         # n_gpu=1,
@@ -435,7 +504,7 @@ if __name__ == "__main__":
         opt_level="O1",  # you can find out more on optimisation levels here https://nvidia.github.io/apex/amp.html#opt-levels-and-properties
         max_grad_norm=1,  # if you enable 16-bit training then set this to a sensible value, 0.5 is a good default
         seed=42,
-        val_check_interval=5,
+        val_check_interval=1,
     )
 
     tokenizer = AutoTokenizer.from_pretrained("t5-small")
@@ -451,7 +520,7 @@ if __name__ == "__main__":
 
     train_params = dict(
         accumulate_grad_batches=args.gradient_accumulation_steps,
-        accelerator='cpu',
+        accelerator="cpu",
         # gpus=args.n_gpu,
         max_epochs=args.num_train_epochs,
         precision=32,
@@ -462,22 +531,21 @@ if __name__ == "__main__":
     def get_dataset(tokenizer, type_path, args):
         tokenizer.max_length = args.max_seq_length
         tokenizer.model_max_length = args.max_seq_length
-        jnlpba = load_dataset("jnlpba", split=["train[:50]", "validation[:50]"])
+        jnlpba = load_dataset("jnlpba", split=["train[:20]", "validation[:20]"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
         return JnlpbDataset(
             tokenizer=tokenizer, dataset=dataset, type_path=type_path, portion=0
         )
 
-    #call get dataset to get the dataset
-
+    # call get dataset to get the dataset
 
     trainer = pl.Trainer(**train_params)
 
     trainer.fit(model)
 
     wandb.alert(
-        title="End of training.", 
+        title="End of training.",
         text="Training finished successfully.",
     )
 
