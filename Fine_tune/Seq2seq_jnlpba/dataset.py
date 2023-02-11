@@ -189,16 +189,30 @@ class JnlpbDataset(Dataset):
 
     def missing(self, row):
         lst = row["ner_tags"]
+        lst_spans = row["spans"]
         if any(x != 0 for x in lst):
             index = random.choice([i for i, x in enumerate(lst) if x != 0])
+            index_to_remove = len([x for x in lst[:index] if x != 0])
+            lst_spans = np.delete(lst_spans, index_to_remove)
             lst[index] = 0
             row["ner_tags"] = lst
+            row["spans"] = lst_spans
             return row
         else:
             return row
 
     def wrong(self, row, num_tags):
+        pd.options.display.max_colwidth = -1
+        mapping = {
+            0:"O",
+            1:"RNA",
+            2:"DNA",
+            3:"Cell_line",
+            4:"Cell_type",
+            5:"Protein"
+        }
         lst = row["ner_tags"]
+        lst_spans = row["spans"]
         tags = []
         for i in range(1, num_tags):
             tags.append(i)
@@ -209,6 +223,11 @@ class JnlpbDataset(Dataset):
             random_number = random.choice(
                 [x for x in [1, 2, 3, 4, 5] if x != current_value]
             )
+            index_to_wrong = len([x for x in lst[:random_index] if x != 0])
+            splitted = lst_spans[index_to_wrong].split(":")
+            new_elem = mapping[random_number] + ":" + splitted[1]
+            lst_spans[index_to_wrong] = new_elem
+            row["spans"] = lst_spans
             lst[random_index] = random_number
             row["ner_tags"] = lst
             return row
@@ -219,6 +238,7 @@ class JnlpbDataset(Dataset):
         pass
 
     def apply(self):
+        pd.options.display.max_colwidth = -1
         num_portion = int(len(self.dataset) * self.portion / 100)
         df = self.dataset.to_pandas()
         tags = [tag for row in df["ner_tags"] for tag in row]

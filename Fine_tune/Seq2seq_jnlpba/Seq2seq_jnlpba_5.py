@@ -28,7 +28,8 @@ if __name__ == "__main__":
     from wandb import AlertLevel
     from pytorch_lightning import Trainer
 
-    # from pytorch_lightning.loggers import WandbLogger
+    from pytorch_lightning.loggers import WandbLogger
+
     from datasets import load_dataset, load_metric
     from datasets import DatasetDict, Dataset
     import random
@@ -44,7 +45,7 @@ if __name__ == "__main__":
         entity="maxhager28",
         name="Seq2seq_jnlpba_strong_test_test",
     )
-
+    
     def set_seed(seed):
         random.seed(seed)
         np.random.seed(seed)
@@ -173,8 +174,23 @@ if __name__ == "__main__":
             )
 
         def _step(self, batch):
+            '''t = [
+                tokenizer.decode(
+                    ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
+                ).strip()
+                for ids in batch["target_ids"]
+            ]
+            texts = [
+                tokenizer.decode(
+                    ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
+                ).strip()
+                for ids in batch["source_ids"]
+            ]'''
             lm_labels = batch["target_ids"]
             lm_labels[lm_labels[:, :] == self.tokenizer.pad_token_id] = -100
+
+            
+            
             outputs = self(
                 input_ids=batch["source_ids"],
                 attention_mask=batch["source_mask"],
@@ -219,6 +235,8 @@ if __name__ == "__main__":
             return new_true, new_pred
 
         def validation_step(self, batch, batch_idx):
+            if batch_idx == 0:
+                self.batch_counter = 0
             input_ids = batch["source_ids"].to("cpu")
             attention_mask = batch["source_mask"].to("cpu")
             outs = model.model.generate(
@@ -242,8 +260,10 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["source_ids"]
             ]
+                                
             len_source_ids = len(batch["source_ids"])
             
+            #souce_ids and target_ids are compared to tokens of different lengths 
             true_label = self.label_true(
                 target,
                 batch["tokens"][self.batch_counter: self.batch_counter + len_source_ids]
@@ -261,10 +281,10 @@ if __name__ == "__main__":
             val_loss = self._step(batch)
             self.log("val_loss", val_loss) 
             ##################################################################
-            print("true_label")
+            '''print("true_label")
             print(true_label)
             print("predicted_label")
-            print(predicted_label)
+            print(predicted_label)'''
             if true_label == [] and predicted_label == []:
                 return
             true_label = np.concatenate(true_mapped)
@@ -498,10 +518,9 @@ if __name__ == "__main__":
     model = T5FineTuner(args)
 
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
-        filename=args.output_dir + "/checkpoint.pth",
         monitor="val_loss",
-        mode="min",
-        save_top_k=5,
+        mode="max",
+        save_on_train_epoch_end=True
     )
 
     train_params = dict(
@@ -529,6 +548,8 @@ if __name__ == "__main__":
     trainer = pl.Trainer(**train_params)
 
     trainer.fit(model)
+    
+    #wandb.save('../../lightning_logs/version_0/checkpoints/*ckpt*')
 
     wandb.alert(
         title="End of training.",

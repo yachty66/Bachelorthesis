@@ -1,3 +1,4 @@
+import os 
 from transformers import DataCollatorForTokenClassification
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.metrics import accuracy_score
@@ -23,8 +24,8 @@ random.seed(42)
 task = "ner"
 model_checkpoint = "bert-base-cased"
 batch_size = 8
-
 jnlpba = load_dataset("jnlpba", split=["train[:50]", "validation[:50]"])
+#jnlpba = load_dataset("jnlpba", split=["train", "validation[:50]"])
 jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
 
 
@@ -148,10 +149,12 @@ class JnlpbDataset:
 
     def get_dataset(self):
         return self.dataset
+    
 
 
-input_dataset_train = JnlpbDataset(dataset=jnlpba, portion=50, type_path="train")
+input_dataset_train = JnlpbDataset(dataset=jnlpba, portion=100, type_path="train")
 dataset_train = input_dataset_train.get_dataset()
+
 input_dataset_validation = JnlpbDataset(
     dataset=jnlpba, portion=0, type_path="validation"
 )
@@ -198,7 +201,8 @@ model = AutoModelForTokenClassification.from_pretrained(
 
 model_name = model_checkpoint.split("/")[-1]
 args = TrainingArguments(
-    f"{model_name}-{task}-jnlpba-weak-labelled",
+    output_dir='./Fine_tune/results',
+    #f"{model_name}-{task}-jnlpba-weak-labelled",
     evaluation_strategy="steps",
     eval_steps=1,
     learning_rate=2e-5,
@@ -251,7 +255,6 @@ def custom_compute_metrics(p, eval_dataset):
             else:
                 true_predictions_new.append(true_predictions[i])
                 true_labels_new.append(true_labels[i])
-    print(true_labels)
     """print("true")
     print(true_labels)
     print("------")
@@ -281,12 +284,14 @@ def custom_compute_metrics(p, eval_dataset):
     ax.set_xticklabels([reverse_mapping[i] for i in range(len(mapping))])
     ax.set_yticklabels([reverse_mapping[i] for i in range(len(mapping))])
 
-    # wandb.log({"confusion_matrix": wandb.Image(plt)})
+    wandb.log({"confusion_matrix": wandb.Image(plt)})
     plt.clf()
     accuracy = accuracy_score(true_labels, true_predictions)
     precision, recall, fscore, support = precision_recall_fscore_support(
         true_labels, true_predictions, zero_division=1, average="weighted"
     )
+    #wandb.log(accuracy, precision, recall, fscore, support)
+    wandb.log({"precision": precision,"recall": recall,"f1": fscore,"accuracy": accuracy})
     return {
         "precision": precision,
         "recall": recall,
@@ -294,7 +299,6 @@ def custom_compute_metrics(p, eval_dataset):
         "accuracy": accuracy,
         "support": support,
     }
-
 
 trainer = Trainer(
     model,
@@ -309,5 +313,9 @@ trainer = Trainer(
 )
 
 trainer.train()
+'''trainer.save_model()
 
+for root, dirs, files in os.walk('./Fine_tune/results'):
+    for file in files:
+        wandb.save(os.path.join(root, file))'''
 wandb.finish()

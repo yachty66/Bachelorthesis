@@ -1,48 +1,283 @@
+from transformers import (
+    AdamW,
+    MT5ForConditionalGeneration,
+    T5ForConditionalGeneration,
+    T5Tokenizer,
+    AutoTokenizer,
+    get_linear_schedule_with_warmup,
+)
+from datasets import load_dataset, load_metric
+from datasets import DatasetDict
+import pytorch_lightning as pl
+from torch.utils.data import Dataset, DataLoader
+import numpy as np
+import pandas as pd
+from nltk.tokenize import sent_tokenize
+import random
+from itertools import chain
+from string import punctuation
 
+# import wandb
+# from wandb import AlertLevel
+from pytorch_lightning import Trainer
 
-'''
-l_targets
-[['However', ',', 'there', 'was', 'a', 'significantly', 'positive', 'association', 'between', 'tumor beta 2-M', 'expression', 'and', 'the', 'degree', 'of', 'lymphocytic', 'infiltration', 'in', 'the', 'tumor', 'tissue', '.'], ['Beta 2-M', 'serum', 'levels', 'were', 'determined', 'by', 'an', 'enzyme-linked', 'immunosorbent', 'assay', 'in', 'samples', 'from', '22', 'of', 'the', 'above', 'women', '.'], ['Although', 'some', 'of', 'the', 'highest', 'values', 'had', 'been', 'obtained', 'in', 'women', 'with', 'larger', '(', 'T4', ')', 'primary', 'tumors', ',', 'the', 'authors', 'failed', 'to', 'detect', 'any', 'statistical', 'relationship', 'between', 'beta 2-M', 'expression', 'in', 'the', 'tumor', 'with', 'serum', 'levels', 'or', 'between', 'serum beta 2-M', 'and', 'the', 'above', 'histologic', ',', 'laboratory', ',', 'and', 'clinical', 'factors', '.'], ['[', 'Preliminary', 'observation', 'of', 'level', 'free-form E receptor', 'levels', 'in', 'serum', 'of', 'normal', 'childbearing-aged', 'and', 'pregnant', 'women', ']'], ['In', '137', 'cases', 'of', 'childbearing-aged', 'and', 'pregnant', 'women', ',', 'free form E receptor', 'levels', '(', 'sE', ')', 'in', 'serum', 'were', 'measured', 'by', 'ELISA', '.'], ['The', 'level', 'of', 'sE', 'was', 'significantly', 'decreased', 'during', 'the', 'first', 'trimester', ',', 'slightly', 'higher', 'in', 'the', 'second', 'trimester', ',', 'and', 'recovered', 'to', 'normal', 'in', 'the', 'third', 'trimester', '.'], ['The', 'level', 'remained', 'lower', 'in', '29', 'PIH', 'women', 'but', 'appeared', 'higher', 'in', 'overdue', 'pregnancies', 'as', 'compared', 'with', 'the', 'normal', '3rd', 'trimester', 'range', '.'], ['The', 'results', 'indicate', 'that', 'there', 'is', 'a', 'relationship', 'between', 'a', 'change', 'in', 'T cell', 'function', 'and', 'pregnancy', '.']]
-
-l_predictions
-[[{'protein': 'glucocorticoid receptors'}, {'cell_type': 'lymphocytes'}], [{'protein': 'glucocorticoid receptors'}, {'protein': 'gr'}, {'cell_type': 'peripheral blood lymphocytes'}], [{'cell_type': 'lymphocytes'}, {'protein': 'gr'}, {'cell_type': 'control cells'}], [{'protein': 'gr'}], [{'cell_type': 'lymphocytes'}, {'protein': 'gr'}], [{'protein': '1 , 25-dihydroxyvitamin d3 receptors'}, {'cell_type': 'lymphocytes'}, {'cell_type': 't- and b-lymphocyte'}], [{'cell_type': 'lymphocytes'}], [{'cell_type': 't lymphocytes'}]]
-'''
+# from pytorch_lightning.loggers import WandbLogger
+from datasets import load_dataset, load_metric
+from datasets import DatasetDict, Dataset
+import random
+import pandas as pd
+import nltk
 import re
-def label_true():
-    
-    #l_targets = [
-    #    [tuple_list[0] for tuple_list in sublist] for sublist in actual
-    #]
-    #
-    l_targets = [['However', ',', 'there', 'was', 'a', 'significantly', 'positive', 'association', 'between', 'tumor beta 2-M', 'expression', 'and', 'the', 'degree', 'of', 'lymphocytic', 'infiltration', 'in', 'the', 'tumor', 'tissue', '.'], ['Beta 2-M', 'serum', 'levels', 'were', 'determined', 'by', 'an', 'enzyme-linked', 'immunosorbent', 'assay', 'in', 'samples', 'from', '22', 'of', 'the', 'above', 'women', '.'], ['Although', 'some', 'of', 'the', 'highest', 'values', 'had', 'been', 'obtained', 'in', 'women', 'with', 'larger', '(', 'T4', ')', 'primary', 'tumors', ',', 'the', 'authors', 'failed', 'to', 'detect', 'any', 'statistical', 'relationship', 'between', 'beta 2-M', 'expression', 'in', 'the', 'tumor', 'with', 'serum', 'levels', 'or', 'between', 'serum beta 2-M', 'and', 'the', 'above', 'histologic', ',', 'laboratory', ',', 'and', 'clinical', 'factors', '.'], ['[', 'Preliminary', 'observation', 'of', 'level', 'free-form E receptor', 'levels', 'in', 'serum', 'of', 'normal', 'childbearing-aged', 'and', 'pregnant', 'women', ']'], ['In', '137', 'cases', 'of', 'childbearing-aged', 'and', 'pregnant', 'women', ',', 'free form E receptor', 'levels', '(', 'sE', ')', 'in', 'serum', 'were', 'measured', 'by', 'ELISA', '.'], ['The', 'level', 'of', 'sE', 'was', 'significantly', 'decreased', 'during', 'the', 'first', 'trimester', ',', 'slightly', 'higher', 'in', 'the', 'second', 'trimester', ',', 'and', 'recovered', 'to', 'normal', 'in', 'the', 'third', 'trimester', '.'], ['The', 'level', 'remained', 'lower', 'in', '29', 'PIH', 'women', 'but', 'appeared', 'higher', 'in', 'overdue', 'pregnancies', 'as', 'compared', 'with', 'the', 'normal', '3rd', 'trimester', 'range', '.'], ['The', 'results', 'indicate', 'that', 'there', 'is', 'a', 'relationship', 'between', 'a', 'change', 'in', 'T cell', 'function', 'and', 'pregnancy', '.']]
-    #for x in incoming:
-    #    result = re.split(";(?![^\(]*\))", x)
-    #    result = [x.strip() for x in result]
-    #    l_predictions.append([{e.split(":")[0].strip(): e.split(":")[1].strip()} for e in result if e])
-    l_predictions =  [[{'protein': 'glucocorticoid receptors'}, {'cell_type': 'lymphocytes'}], [{'protein': 'glucocorticoid receptors'}, {'protein': 'gr'}, {'cell_type': 'peripheral blood lymphocytes'}], [{'cell_type': 'lymphocytes'}, {'protein': 'gr'}, {'cell_type': 'control cells'}], [{'protein': 'gr'}], [{'cell_type': 'lymphocytes'}, {'protein': 'gr'}], [{'protein': '1 , 25-dihydroxyvitamin d3 receptors'}, {'cell_type': 'lymphocytes'}, {'cell_type': 't- and b-lymphocyte'}], [{'cell_type': 'lymphocytes'}], [{'cell_type': 't lymphocytes'}]]
-    result = []
-    for inner_list in l_targets:
-        #print(inner_list)
-        outcome_inner = []
-        for word in inner_list:
-            #print(word)
-            found = False
-            for dict_list in l_predictions:
-                #print(dict_list)
-                for dict_item in dict_list:
-                    #print(dict_item)
-                    if word.lower() in dict_item.values():
-                        print(word)
-                        outcome_inner.append(list(dict_item.keys())[0])
-                        found = True
-                        break
-                if found:
-                    break
-            if not found:
-                outcome_inner.append("O")
-        result.append(outcome_inner)
-    return result
-        
-        
-        
-label_true()
+
+class JnlpbDataset(Dataset):
+    def __init__(self, tokenizer, dataset, type_path, portion, max_len=512):
+        self.dataset = dataset[type_path]
+        self.portion = portion
+        self.max_len = max_len
+        self.tokenizer = tokenizer
+        self.tokenizer.max_length = max_len
+        self.tokenizer.model_max_length = max_len
+        self.inputs = []
+        self.targets = []
+        # self.tokens = []
+        self.remove()
+        self.merge()
+        self.convert()
+        self.apply()
+        self._build()
+
+    def __len__(self):
+        return len(self.inputs)
+
+    def __getitem__(self, index):
+        source_ids = self.inputs[index]["input_ids"].squeeze()
+        target_ids = self.targets[index]["input_ids"].squeeze()
+        # tokens = self.tokens[index]["tokens"].squeeze()
+
+        src_mask = self.inputs[index][
+            "attention_mask"
+        ].squeeze()  # might need to squeeze
+        target_mask = self.targets[index][
+            "attention_mask"
+        ].squeeze()  # might need to squeeze
+        tokens = self.dataset["tokens"]
+
+        return {
+            "source_ids": source_ids,
+            "source_mask": src_mask,
+            "target_ids": target_ids,
+            "target_mask": target_mask,
+            "tokens": tokens,
+        }
+
+    def remove(self):
+        df = pd.DataFrame(self.dataset)
+        df = df[df["tokens"].apply(lambda x: ";" not in x)]
+        self.dataset = df
+
+    def map_tags(self, row):
+        mapping = {
+            0: "O",
+            1: "B-DNA",
+            2: "I-DNA",
+            3: "B-RNA",
+            4: "I-RNA",
+            5: "B-cell_line",
+            6: "I-cell_line",
+            7: "B-cell_type",
+            8: "I-cell_type",
+            9: "B-protein",
+            10: "I-protein",
+        }
+        row["ner_tags"] = [[mapping[tag] for tag in row["ner_tags"]]][0]
+        return row
+
+    def convert(self):
+        df_train = pd.DataFrame(self.dataset)
+        l = []
+        l_temp = []
+        for i in range(len(df_train)):
+            for j in range(len(df_train["ner_tags"][i])):
+                if df_train["ner_tags"][i][j] != "O":
+                    l_temp.append(
+                        df_train["ner_tags"][i][j] + ": " + df_train["tokens"][i][j]
+                    )
+            l.append(l_temp)
+            l_temp = []
+        d = {"spans": l}
+        df_train = df_train.assign(spans=l)
+        train = Dataset.from_pandas(df_train)
+        self.dataset = train
+        return train
+
+    def merge_tags(self, tags, tokens):
+        merged_tags = []
+        merged_tokens = []
+        i = 0
+        while i < len(tags):
+            if tags[i].startswith("B-"):
+                merged_tag = tags[i][2:]
+                merged_token = tokens[i]
+                i += 1
+                while i < len(tags) and tags[i].startswith("I-"):
+                    merged_tag += " " + tags[i][2:]
+                    merged_token += " " + tokens[i]
+                    i += 1
+                merged_tags.append(merged_tag)
+                merged_tokens.append(merged_token)
+            else:
+                merged_tags.append(tags[i])
+                merged_tokens.append(tokens[i])
+                i += 1
+        for i in range(len(merged_tags)):
+            s = merged_tags[i].split()[0]
+            s = s[0].upper() + s[1:]
+            merged_tags[i] = s
+        return merged_tags, merged_tokens
+
+    def merge(self):
+        df_train = pd.DataFrame(self.dataset)
+        df_train = df_train.apply(self.map_tags, axis=1)
+        df_train[["ner_tags", "tokens"]] = df_train.apply(
+            lambda x: self.merge_tags(x["ner_tags"], x["tokens"]),
+            axis=1,
+            result_type="expand",
+        )
+        self.dataset = Dataset.from_pandas(df_train)
+
+    def _build(self):
+        for idx in range(len(self.dataset)):
+            # print(self.dataset)
+            # print(30*".")
+            # print(self.dataset[idx]["tokens"])
+            input_, target = " ".join(self.dataset[idx]["tokens"]), "; ".join(
+                self.dataset[idx]["spans"]
+            )
+            # tokens = self.dataset[idx]["tokens"] + ["</s>"]
+            input_ = input_.lower() + " </s>"
+            target = target.lower() + " </s>"
+            # print(input_)
+            # print(30*"-")
+            # print(target)
+            # print(30*"-")
+            # print(tokens)
+            # what are inputs and targets?
+            tokenized_inputs = self.tokenizer.batch_encode_plus(
+                [input_],
+                max_length=self.max_len,
+                padding="max_length",
+                truncation=True,
+                return_tensors="pt",
+            )
+            tokenized_targets = self.tokenizer.batch_encode_plus(
+                [target],
+                max_length=self.max_len,
+                padding="max_length",
+                truncation=True,
+                return_tensors="pt",
+            )
+            """tokenized_tokens = self.tokenizer.batch_encode_plus(
+                tokens,
+                max_length=self.max_len,
+                padding="max_length",
+                truncation=True,
+                return_tensors="pt",
+            )  """
+            self.inputs.append(tokenized_inputs)
+            self.targets.append(tokenized_targets)
+            # self.tokens.append(tokenized_tokens)
+
+    def missing(self, row):
+        lst = row["ner_tags"]
+        lst_spans = row["spans"]
+        if any(x != 0 for x in lst):
+            index = random.choice([i for i, x in enumerate(lst) if x != 0])
+            index_to_remove = len([x for x in lst[:index] if x != 0])
+            lst_spans = np.delete(lst_spans, index_to_remove)
+            lst[index] = 0
+            row["ner_tags"] = lst
+            row["spans"] = lst_spans
+            return row
+        else:
+            return row
+
+    def wrong(self, row, num_tags):
+        pd.options.display.max_colwidth = -1
+        mapping = {
+            0:"O",
+            1:"RNA",
+            2:"DNA",
+            3:"Cell_line",
+            4:"Cell_type",
+            5:"Protein"
+        }
+        lst = row["ner_tags"]
+        lst_spans = row["spans"]
+        tags = []
+        for i in range(1, num_tags):
+            tags.append(i)
+        if any(x != 0 for x in lst):
+            indices = [i for i, x in enumerate(lst) if x != 0]
+            random_index = random.choice(indices)
+            current_value = lst[random_index]
+            random_number = random.choice(
+                [x for x in [1, 2, 3, 4, 5] if x != current_value]
+            )
+            index_to_wrong = len([x for x in lst[:random_index] if x != 0])
+            splitted = lst_spans[index_to_wrong].split(":")
+            new_elem = mapping[random_number] + ":" + splitted[1]
+            lst_spans[index_to_wrong] = new_elem
+            row["spans"] = lst_spans
+            lst[random_index] = random_number
+            row["ner_tags"] = lst
+            return row
+        else:
+            return row
+
+    def uncomplete(self):
+        pass
+
+    def apply(self):
+        pd.options.display.max_colwidth = -1
+        num_portion = int(len(self.dataset) * self.portion / 100)
+        df = self.dataset.to_pandas()
+        tags = [tag for row in df["ner_tags"] for tag in row]
+        unique_tags = set(tags)
+        mapping = {
+            "O": 0,
+            "RNA": 1,
+            "DNA": 2,
+            "Cell_line": 3,
+            "Cell_type": 4,
+            "Protein": 5,
+        }
+        df["ner_tags"] = [[mapping[tag] for tag in tags] for tags in df["ner_tags"]]
+        for i in range(num_portion):
+            random_number = random.randint(1, 2)
+            if random_number == 1:
+                new_row = self.missing(df.iloc[i])
+                df.iloc[i] = new_row
+            elif random_number == 2:
+                num_tags = len(unique_tags)
+                new_row = self.wrong(df.iloc[i], num_tags)
+                df.iloc[i] = new_row
+            """else:
+                    self.uncomplete()"""
+        self.dataset = Dataset.from_pandas(df)
+
+    def get_dataset(self):
+        return self.dataset
+
+
+tokenizer = AutoTokenizer.from_pretrained("t5-small")
+tokenizer.max_length = 256
+tokenizer.model_max_length = 256
+jnlpba = load_dataset("jnlpba", split=["train[:50]", "validation[:50]"])
+jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
+dataset = jnlpba
+dataset = JnlpbDataset(
+    tokenizer=tokenizer, dataset=dataset, type_path="train", portion=100
+)
+
+
+
