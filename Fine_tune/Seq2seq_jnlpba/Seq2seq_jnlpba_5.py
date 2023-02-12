@@ -174,22 +174,8 @@ if __name__ == "__main__":
             )
 
         def _step(self, batch):
-            '''t = [
-                tokenizer.decode(
-                    ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
-                ).strip()
-                for ids in batch["target_ids"]
-            ]
-            texts = [
-                tokenizer.decode(
-                    ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
-                ).strip()
-                for ids in batch["source_ids"]
-            ]'''
             lm_labels = batch["target_ids"]
-            lm_labels[lm_labels[:, :] == self.tokenizer.pad_token_id] = -100
-
-            
+            lm_labels[lm_labels[:, :] == self.tokenizer.pad_token_id] = -100            
             
             outputs = self(
                 input_ids=batch["source_ids"],
@@ -539,6 +525,9 @@ if __name__ == "__main__":
         jnlpba = load_dataset("jnlpba", split=["train[:50]", "validation[:50]"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
+        JnlpbDataset(
+            tokenizer=tokenizer, dataset=dataset, type_path="train", portion=0
+        ).get_dataset()
         return JnlpbDataset(
             tokenizer=tokenizer, dataset=dataset, type_path=type_path, portion=0
         )

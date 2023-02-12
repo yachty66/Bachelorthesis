@@ -155,6 +155,7 @@ class JnlpbDataset:
 input_dataset_train = JnlpbDataset(dataset=jnlpba, portion=100, type_path="train")
 dataset_train = input_dataset_train.get_dataset()
 
+
 input_dataset_validation = JnlpbDataset(
     dataset=jnlpba, portion=0, type_path="validation"
 )

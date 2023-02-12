@@ -266,4 +266,8 @@ class JnlpbDataset(Dataset):
         self.dataset = Dataset.from_pandas(df)
 
     def get_dataset(self):
+        import sys 
+        np.set_printoptions(threshold=sys.maxsize)
+        #print first row of dataset
+        print(self.dataset[0])
         return self.dataset
