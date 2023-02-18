@@ -246,10 +246,6 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["source_ids"]
             ]
-
-            
-                                
-                                
                                 
             len_source_ids = len(batch["source_ids"])
             
@@ -271,10 +267,10 @@ if __name__ == "__main__":
             val_loss = self._step(batch)
             self.log("val_loss", val_loss) 
             ##################################################################
-            print("true_label")
+            '''print("true_label")
             print(true_label)
             print("predicted_label")
-            print(predicted_label)
+            print(predicted_label)'''
             if true_label == [] and predicted_label == []:
                 return
             true_label = np.concatenate(true_mapped)
@@ -537,8 +533,162 @@ if __name__ == "__main__":
         )
 
     # call get dataset to get the dataset
+    model = T5FineTuner.load_from_checkpoint("epoch=0-step=142.ckpt")
+    
+    def label_true(incoming, actual):
+        l_targets = [
+            [tuple_list[0] for tuple_list in sublist] for sublist in actual
+        ]
+        l_predictions = []
+        for x in incoming:
+            result = re.split(";(?![^\(]*\))", x)
+            result = [x.strip() for x in result]
+            l_predictions.append([{e.split(":")[0].strip(): e.split(":")[1].strip()} for e in result if e])
+        result = []
+        for inner_list in l_targets:
+            outcome_inner = []
+            for word in inner_list:
+                found = False
+                for dict_list in l_predictions:
+                    for dict_item in dict_list:
+                        if word.lower() in dict_item.values():
+                            outcome_inner.append(list(dict_item.keys())[0])
+                            found = True
+                            break
+                    if found:
+                        break
+                if not found:
+                    outcome_inner.append("O")
+            result.append(outcome_inner)
+        return result
 
-    trainer = pl.Trainer(**train_params)
+    def label_pred(incoming, actual):
+        l_targets = [
+            [tuple_list[0] for tuple_list in sublist] for sublist in actual
+        ]
+        l_predictions = []
+        for string in incoming:
+            matches = [
+                match
+                for match in re.findall(
+                    r"(rna: (.+?))(;|$)|(dna: (.+?))(;|$)|(cell_line: (.+?))(;|$)|(protein: (.+?))(;|$)|(cell_type: (.+?))(;|$)",
+                    string,
+                )
+                if match[1] or match[4] or match[7] or match[10] or match[13]
+            ]
+            inner_list = []
+            for match in matches:
+                if match[1]:
+                    inner_list.append({"rna": match[1]})
+                if match[4]:
+                    inner_list.append({"dna": match[4]})
+                if match[7]:
+                    inner_list.append({"cell_line": match[7]})
+                if match[10]:
+                    inner_list.append({"protein": match[10]})
+                if match[13]:
+                    inner_list.append({"cell_type": match[13]})
+            l_predictions.append(inner_list)
+
+        result = []
+        for inner_list in l_targets:
+            outcome_inner = []
+            for word in inner_list:
+                found = False
+                for dict_list in l_predictions:
+                    for dict_item in dict_list:
+                        if word.lower() in dict_item.values():
+                            outcome_inner.append(list(dict_item.keys())[0])
+                            found = True
+                            break
+                    if found:
+                        break
+                if not found:
+                    outcome_inner.append("O")
+            result.append(outcome_inner)
+        return result
+
+    def val_preprocessing(true, pred):
+        new_true = []
+        new_pred = []
+        for i in range(len(true)):
+            if true[i] == 0 and pred[i] == 0:
+                continue
+            else:
+                new_true.append(true[i])
+                new_pred.append(pred[i])
+        return new_true, new_pred
+        
+    def map_tags(lst):
+        mapping = {
+            "O": 0,
+            "rna": 1,
+            "dna": 2,
+            "cell_line": 3,
+            "cell_type": 4,
+            "protein": 5,
+        }
+        result = [[mapping[tag] for tag in tags] for tags in lst]
+        return result
+    
+    from tqdm import tqdm
+    jnlpba = load_dataset("jnlpba", split=["train[:1]", "validation[:50]"])
+    jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
+    test_dataset = JnlpbDataset(tokenizer=tokenizer, dataset=jnlpba, type_path='validation', portion=0)
+    #todo check if my removing shuffle=True of has any dramatic impact 
+    test_loader = DataLoader(test_dataset, batch_size=32,
+                                num_workers=2)
+    model.model.eval()
+    model = model.to("cpu")
+    outputs = []
+    targets = []
+    all_text = []
+    true_labels = []
+    pred_labels = []
+    predictions = []
+    predictions_temp = []
+    counter = 0
+    for batch in tqdm(test_loader):
+        counter += 1
+        input_ids = batch['source_ids'].to("cpu")
+        attention_mask = batch['source_mask'].to("cpu")
+        outs = model.model.generate(input_ids=input_ids,
+                                    attention_mask=attention_mask)
+
+        dec = [tokenizer.decode(ids, skip_special_tokens=True,
+                                clean_up_tokenization_spaces=False).strip() for ids in outs]
+
+        target = [tokenizer.decode(ids, skip_special_tokens=True,  clean_up_tokenization_spaces=False).strip()
+                    for ids in batch["target_ids"]]
+        texts = [tokenizer.decode(ids, skip_special_tokens=True,  clean_up_tokenization_spaces=False).strip()
+                    for ids in batch["source_ids"]]
+        #print("outs")
+        #print(outs)
+        #print(30*"-")
+        for i in range(len(dec)):
+            print("dec")
+            print(dec[i])
+            print("target")
+            print(target[i])
+            print(30*"-")
+            
+        '''print("dec")
+        print(dec)
+        print(30*"-")
+        print("target")
+        print(target)
+        print(30*"-")
+        print("texts")
+        print(texts)
+        print(30*"-")'''
+
+    
+    
+    
+
+    
+
+    '''trainer = pl.Trainer(**train_params)
 
     trainer.fit(model)
     
@@ -549,4 +699,4 @@ if __name__ == "__main__":
         text="Training finished successfully.",
     )
 
-    wandb.finish()
+    wandb.finish()'''

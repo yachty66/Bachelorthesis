@@ -17,17 +17,14 @@ import random
 from itertools import chain
 from string import punctuation
 
-# import wandb
-# from wandb import AlertLevel
 from pytorch_lightning import Trainer
 
-# from pytorch_lightning.loggers import WandbLogger
 from datasets import load_dataset, load_metric
 from datasets import DatasetDict, Dataset
 import random
 import pandas as pd
 import nltk
-import re
+
 
 class JnlpbDataset(Dataset):
     def __init__(self, tokenizer, dataset, type_path, portion, max_len=512):
@@ -147,21 +144,11 @@ class JnlpbDataset(Dataset):
 
     def _build(self):
         for idx in range(len(self.dataset)):
-            # print(self.dataset)
-            # print(30*".")
-            # print(self.dataset[idx]["tokens"])
             input_, target = " ".join(self.dataset[idx]["tokens"]), "; ".join(
                 self.dataset[idx]["spans"]
             )
-            # tokens = self.dataset[idx]["tokens"] + ["</s>"]
             input_ = input_.lower() + " </s>"
             target = target.lower() + " </s>"
-            # print(input_)
-            # print(30*"-")
-            # print(target)
-            # print(30*"-")
-            # print(tokens)
-            # what are inputs and targets?
             tokenized_inputs = self.tokenizer.batch_encode_plus(
                 [input_],
                 max_length=self.max_len,
@@ -176,16 +163,8 @@ class JnlpbDataset(Dataset):
                 truncation=True,
                 return_tensors="pt",
             )
-            """tokenized_tokens = self.tokenizer.batch_encode_plus(
-                tokens,
-                max_length=self.max_len,
-                padding="max_length",
-                truncation=True,
-                return_tensors="pt",
-            )  """
             self.inputs.append(tokenized_inputs)
             self.targets.append(tokenized_targets)
-            # self.tokens.append(tokenized_tokens)
 
     def missing(self, row):
         lst = row["ner_tags"]
@@ -261,23 +240,7 @@ class JnlpbDataset(Dataset):
                 num_tags = len(unique_tags)
                 new_row = self.wrong(df.iloc[i], num_tags)
                 df.iloc[i] = new_row
-            """else:
-                    self.uncomplete()"""
         self.dataset = Dataset.from_pandas(df)
 
     def get_dataset(self):
         return self.dataset
-
-
-tokenizer = AutoTokenizer.from_pretrained("t5-small")
-tokenizer.max_length = 256
-tokenizer.model_max_length = 256
-jnlpba = load_dataset("jnlpba", split=["train[:50]", "validation[:50]"])
-jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
-dataset = jnlpba
-dataset = JnlpbDataset(
-    tokenizer=tokenizer, dataset=dataset, type_path="train", portion=100
-)
-
-
-

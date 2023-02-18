@@ -45,7 +45,7 @@ if __name__ == "__main__":
         entity="maxhager28",
         name="Seq2seq_jnlpba_strong_test_test",
     )
-    
+
     def set_seed(seed):
         random.seed(seed)
         np.random.seed(seed)
@@ -73,7 +73,7 @@ if __name__ == "__main__":
             self.true = []
             self.pred = []
             self.batch_counter = 0
-            #self.counter = 0
+            # self.counter = 0
 
         def is_logger(self):
             return True
@@ -175,8 +175,8 @@ if __name__ == "__main__":
 
         def _step(self, batch):
             lm_labels = batch["target_ids"]
-            lm_labels[lm_labels[:, :] == self.tokenizer.pad_token_id] = -100            
-            
+            lm_labels[lm_labels[:, :] == self.tokenizer.pad_token_id] = -100
+
             outputs = self(
                 input_ids=batch["source_ids"],
                 attention_mask=batch["source_mask"],
@@ -246,35 +246,27 @@ if __name__ == "__main__":
                 ).strip()
                 for ids in batch["source_ids"]
             ]
-
-            
-                                
-                                
-                                
             len_source_ids = len(batch["source_ids"])
-            
-            #souce_ids and target_ids are compared to tokens of different lengths 
+
             true_label = self.label_true(
                 target,
-                batch["tokens"][self.batch_counter: self.batch_counter + len_source_ids]
+                batch["tokens"][
+                    self.batch_counter : self.batch_counter + len_source_ids
+                ],
             )
             predicted_label = self.label_pred(
                 dec,
-                batch["tokens"][self.batch_counter: self.batch_counter + len_source_ids]
+                batch["tokens"][
+                    self.batch_counter : self.batch_counter + len_source_ids
+                ],
             )
             self.batch_counter += len_source_ids
-            #self.counter += self.hparam.eval_batch_size
             pred_mapped = self.map_tags(predicted_label)
             true_mapped = self.map_tags(true_label)
             self.true.extend(np.array(true_mapped).flatten())
             self.pred.extend(np.array(pred_mapped).flatten())
             val_loss = self._step(batch)
-            self.log("val_loss", val_loss) 
-            ##################################################################
-            print("true_label")
-            print(true_label)
-            print("predicted_label")
-            print(predicted_label)
+            self.log("val_loss", val_loss)
             if true_label == [] and predicted_label == []:
                 return
             true_label = np.concatenate(true_mapped)
@@ -316,7 +308,7 @@ if __name__ == "__main__":
                     "f1": fscore,
                     "accuracy": accuracy,
                 }
-            )           
+            )
             return true_mapped, pred_mapped
 
         def validation_epoch_end(self, outputs):
@@ -360,7 +352,6 @@ if __name__ == "__main__":
                     "accuracy": accuracy,
                 }
             )
-
 
         def configure_optimizers(self):
             model = self.model
@@ -508,9 +499,7 @@ if __name__ == "__main__":
     model = T5FineTuner(args)
 
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
-        monitor="val_loss",
-        mode="max",
-        save_on_train_epoch_end=True
+        monitor="val_loss", mode="max", save_on_train_epoch_end=True
     )
 
     train_params = dict(
@@ -526,12 +515,9 @@ if __name__ == "__main__":
     def get_dataset(tokenizer, type_path, args):
         tokenizer.max_length = args.max_seq_length
         tokenizer.model_max_length = args.max_seq_length
-        jnlpba = load_dataset("jnlpba", split=["train[:50]", "validation[:50]"])
+        jnlpba = load_dataset("jnlpba", split=["train[:18500]", "validation[:3500]"])
         jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
         dataset = jnlpba
-        JnlpbDataset(
-            tokenizer=tokenizer, dataset=dataset, type_path="train", portion=0
-        ).get_dataset()
         return JnlpbDataset(
             tokenizer=tokenizer, dataset=dataset, type_path=type_path, portion=0
         )
@@ -541,8 +527,8 @@ if __name__ == "__main__":
     trainer = pl.Trainer(**train_params)
 
     trainer.fit(model)
-    
-    #wandb.save('../../lightning_logs/version_0/checkpoints/*ckpt*')
+
+    # wandb.save('../../lightning_logs/version_0/checkpoints/*ckpt*')
 
     wandb.alert(
         title="End of training.",

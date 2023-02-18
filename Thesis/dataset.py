@@ -5,7 +5,7 @@ import random
 from datasets import load_dataset, load_metric
 from datasets import DatasetDict, Dataset
 
-jnlpba = load_dataset("jnlpba", split=["train", "validation"])
+jnlpba = load_dataset("jnlpba", split=["train[:18500]", "validation[:3500]"])
 
 jnlpba = DatasetDict({"train": jnlpba[0], "validation": jnlpba[1]})
 
@@ -218,7 +218,6 @@ print("Number of lines in validation split:", analyzer.get_number_of_lines("vali
 #add number of occurence for each attribute
 print("Number of occurence for each attribute in train split:", analyzer.get_number_of_occurence("train"))
 print("Number of occurence for each attribute in validation split:", analyzer.get_number_of_occurence("validation"))
-
 
 print("Unique attributes train:", analyzer.get_unique_attributes("train"))
 print("Unique attributes validation:", analyzer.get_unique_attributes("validation"))
